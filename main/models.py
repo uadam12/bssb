@@ -47,7 +47,7 @@ class Article(models.Model):
 
 class FAQ(models.Model):
     question = models.CharField(unique=True, max_length=150)
-    answer = models.TextField(max_length=1000)
+    answer = models.CharField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     add_url = reverse_lazy('main:create-faq')
