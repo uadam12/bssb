@@ -46,8 +46,8 @@ class Article(models.Model):
         ordering = ('-publish_on', 'headline')
 
 class FAQ(models.Model):
-    question = models.TextField(unique=True)
-    answer = models.TextField()
+    question = models.CharField(unique=True, max_length=150)
+    answer = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     add_url = reverse_lazy('main:create-faq')
