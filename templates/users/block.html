@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card my-5 mx-auto" style="max-width: 600px;">
+    <div class="card-header">
+        <h2 class="card-title text-success">Your account is bloked!!!</h2>
+    </div>
+    <div class="card-body">
+        <p>
+            Sorry for the inconviniences you will feel,
+            but your account is temporarily block due to
+            some suspitious activies.
+        </p>
+    </div>
+    <div class="card-footer">
+        <div class="d-grid">
+            <a href="{% url 'main:news' %}" class="btn btn-success">
+                <i class="bi bi-newspaper"></i> Get Activation instuructions
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

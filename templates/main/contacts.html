@@ -1,0 +1,26 @@
+{% for contact in data %}
+<div class="col">
+    <div class="card my-3">
+        <div class="card-header">
+            <h3 class="card-title text-success">
+                {{ contact.subject }}
+            </h3>
+        </div>
+
+        <div class="card-body">
+            {{ contact.message|linebreaks }}
+            <p class="text-muted">
+                From: {{ contact.sender }} on {{ contact.send_on }}
+            </p>
+        </div>
+
+        <div class="card-footer">
+            <div class="text-end">
+                <a href="{{ contact.reply_url }}" hx-get="{{ contact.reply_url }}" hx-target="#dialog" class="btn btn-success">
+                    <i class="bi bi-reply"></i> Reply
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

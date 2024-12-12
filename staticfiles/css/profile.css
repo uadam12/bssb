@@ -1,0 +1,22 @@
+.profile-card {
+    margin-bottom: 5px;
+    max-width: 400px;
+    margin-inline: auto;
+    text-align: center;
+}
+
+.profile-card input {
+    display: none;
+}
+
+.profile-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 5px auto 0;
+}
+
+.profile-card .card-title {
+    font-size: 1.3rem;
+    font-weight: bolder;
+}

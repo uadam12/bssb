@@ -1,0 +1,10 @@
+{% if applicant.access_code == 0 %}
+<button hx-post="{% url 'official:unblock-applicant' applicant_id=applicant.id %}" class="btn btn-success">
+    Unblock {{ applicant }}
+</button>
+
+{% else %}
+<button hx-post="{% url 'official:block-applicant' applicant_id=applicant.id %}" class="btn btn-danger">
+    Block {{ applicant }}
+</button>
+{% endif %}

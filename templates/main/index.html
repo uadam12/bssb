@@ -1,0 +1,169 @@
+{% extends "base.html" %} {% load static %}
+{% block content %}
+
+<div class="card my-5">
+    <div class="card-body">
+        <div class="row align-items-center text-center">
+            <div class="col-md-6 order-2">
+                <h2 class="text-success">Borno State Scholarship Board</h2>
+                <p>
+                    <strong>{{ board.motto }}</strong>
+                </p>
+
+                <p>
+                    <a href="{% url 'applicant:scholarships' %}" class="btn btn-success btn-lg">Apply Now</a>
+                </p>
+            </div>
+
+            <div class="col-md-6 order-1">
+                <img src="{% static 'imgs/logo.png' %}" alt="BSSB" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body bg-dark">
+        <div id="gallary" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'imgs/gallary/pic1.jpeg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic2.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic3.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic4.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic5.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic6.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic7.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic8.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic9.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic10.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic11.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/gallary/pic12.jpg' %}" class="d-block w-100" alt="...">
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#gallary" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#gallary" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-success mb-3">Our Achievements</h2>
+
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <i class="bi bi-award-fill display-3 text-success"></i>
+                <h5 class="mt-5">1,000+ Scholarships Awarded</h5>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <i class="bi bi-trophy-fill display-3 text-success"></i>
+                <h5 class="mt-5">Excellence in Education</h5>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <i class="bi bi-people-fill display-3 text-success"></i>
+                <h5 class="mt-5">Strong Community Impact</h5>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if board.criteria %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-success mb-4">Eligibility Criteria</h2>
+
+        <ul class="list-group list-group-flush">
+            {% for criterion in board.criteria %}
+            <li class="list-group-item">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                {{ criterion }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endif %}
+
+{% if board.about %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-success mb-4">About US</h2>
+        <p class="text-center">{{ board.about.splitlines.0 }}</p>
+    </div>
+</section>
+{% endif %}
+
+{% if fags %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-success mb-4">Frequently Asked Questions</h2>
+
+        <div class="accordion" id="faqs">
+            {% for faq in faqs %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq-header-{{ faq.id }}">
+                    <button class="accordion-button {% if not forloop.first %} collapsed {% endif %}" 
+                        type="button" data-bs-toggle="collapse"
+                        data-bs-target="#faq-{{ faq.id }}" aria-expanded="{{ forloop.first }}" aria-controls="faq-{{ faq.id }}">
+                        <i class="bi bi-question-circle text-success me-2"></i>
+                        {{ faq.question }}
+                    </button>
+                </h2>
+                <div id="faq-{{ faq.id }}"
+                    class="accordion-collapse collapse {% if forloop.first %} show {% endif %}" 
+                    aria-labelledby="faq-header-{{ faq.id }}"
+                    data-bs-parent="#faqs">
+                    <div class="accordion-body">
+                        {{ faq.answer }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock content %}

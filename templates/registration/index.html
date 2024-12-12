@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center">Registration/Applications Constraints</h1>
+    <p>For an applicant to register completely for the program he/she must past the following constraints:</p>
+
+    <ol class="list mb-5">
+        <li>
+            <strong>Must pay <i class="amount">{{ registration.fee }}</i> as registration fee</strong>
+        </li>
+
+        <li>
+            <strong>Must past the following registration criteria:</strong>
+
+            <ul>
+            {% for criterion in registration.criteria.all %}
+                <li>{{ criterion }}</li>
+            {% endfor %}
+            </ul>
+        </li>
+
+        <li>
+            <strong>Must past upload the following required documents:</strong>
+            <ul>
+            {% for requirement in registration.requirements.all %}
+                <li>
+                    {{ requirement }} -
+                    {% if requirement.is_compulsory %} Required {% else %} Optional {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        </li>
+    </ol>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Update Constraints</h3>
+        </div>
+
+        <div class="card-body">
+            {% load crispy_forms_tags %}
+            {% crispy form %}
+        </div>
+
+        <div class="card-footer">
+            <p>
+                <i class="bi bi-info-circle text-danger"></i>
+                <b>Note: </b> The requirement(s) marks with astericks are compulsory.
+            </p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recover Your Account</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .email-header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .email-header h1 {
+      color: #dc3545;
+      margin: 0;
+    }
+    .email-content {
+      margin: 20px 0;
+    }
+    .email-content p {
+      line-height: 1.6;
+    }
+    .activate-btn {
+      display: inline-block;
+      background-color: #dc3545;
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    .email-footer {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <header class="email-header">
+      <h1>Recover Your Account</h1>
+    </header>
+
+    <main class="email-content">
+      <p>Hi {{ user }},</p>
+      <p>We recieved a request to reset your password. Clicked the button below to reset it.</p>
+      <a href="{{ recovery_link }}" class="activate-btn">Activate Account</a>
+      <p>If the button doesn't work, copy and paste this link into your browser:</p>
+      <p>{{ recovery_link }}</p>
+    </main>
+
+    <footer class="email-footer">
+      <p>If you didn’t request this email, you can safely ignore it.</p>
+      <p>&copy; {% now 'Y' %} Borno State Scholarships Board</p>
+    </footer>
+  </div>
+</body>
+</html>

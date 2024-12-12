@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3 class="text-success text-center">{{ title }}</h3>
+
+<form method="post" class="my-5">
+    {% csrf_token %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for program in programs %}
+        <div class="col">
+            <h5 class='text-success'>{{ program }}</h5>
+            <ul class="list-group list-group-flush">
+                {% for field_of_study in program.field_of_studies.all %}
+                <li class="list-group-item">
+                    <div class="form-check form-switch">
+                        <input type="checkbox" 
+                            value="{{ field_of_study.pk }}" 
+                            name="field_of_studies" id="field-of-study-{{ field_of_study.pk }}"
+                            {% if field_of_study in scholarship.field_of_studies.all %} selected {% endif %}
+                            class="form-check-input">
+                        <label for="field-of-study-{{ field_of_study.pk }}" class="form-check-input-label">{{ field_of_study }}</label>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-end mt-3">
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i> Save field of studies
+        </button>
+    </div>
+</form>
+{% endblock %}

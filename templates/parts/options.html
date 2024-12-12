@@ -1,0 +1,4 @@
+<option selected disabled>{{ empty_label }}</option>
+{% for obj in data %}
+<option value="{{ obj.pk }}">{{ obj }}</option>
+{% endfor %}

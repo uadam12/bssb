@@ -1,0 +1,37 @@
+{% for official in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ official }}</td>
+    <td>{{ official.email }}</td>
+    <td>
+        {% if official.access_code == 2 %} 
+        <span class="badge badge-fill badge-md bg-secondary">Guest</span>
+        {% else %}
+        <span class="badge badge-fill badge-md bg-primary">Adminstrator</span>
+        {% endif %}
+    </td>
+    <td>
+        <div class="btn-group" hx-target="#dialog">
+            {% with update_view='official:update' delete_view='official:delete' %}
+            <a href="{% url update_view id=official.id %}" 
+                hx-get="{% url update_view id=official.id %}" 
+                class="btn btn-warning">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <a href="{% url delete_view id=official.id %}" 
+                hx-get="{% url delete_view id=official.id %}" 
+                class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+            </a>
+            {% endwith %}
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center text-muted">
+        There is no available official
+    </td>
+</tr>
+{% endfor %}

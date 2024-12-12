@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'imgs/icons/favicon.ico' %}" type="image/x-icon">
+    <title>
+        {{ title|default:"Borno State Scholarship Board" }}
+    </title>
+
+    <link href="{% static 'bs/css/bootstrap.min.css' %}" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="{% static 'bi/font/bootstrap-icons.min.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+
+    {% block head_end %} {% endblock %}
+</head>
+
+<body>
+    {% if user.access_code > 1 %}
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar-toggle bg-dark">
+            <div class="sidebar-logo">
+                <a href="{% url 'official:dashboard' %}">
+                    <i class="bi bi-speedometer2"></i>
+                    BSSB Official
+                </a>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            {% include "layouts/menu-bar.html" %}
+
+            <!-- Sidebar Navigation Ends -->
+            <div class="sidebar-footer">
+                <form action="{% url 'user:logout' %}" method="post" class="d-grid p-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-box-arrow-left"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </aside>
+        <!-- Sidebar Ends -->
+
+        <!-- Main Component -->
+        <div class="main">
+            {% endif %}
+            <header>
+                {% include "layouts/navbar.html" %}
+                {% include "layouts/messages.html" %}
+            </header>
+
+            <main class='container my-3'>
+                {% block content %} {% endblock content %}
+            </main>
+
+            <div class="d-grid postion-flex show" id="loader">
+                <div>
+                    <img src="{% static 'imgs/loader.svg' %}" alt="...">
+                </div>
+            </div>
+
+            {% include "layouts/footer.html" %}
+            {% if user.access_code > 1 %}
+        </div>
+    </div>
+
+    <script>
+        const toggler = document.querySelector(".toggler-btn");
+        const sidebar = document.querySelector("#sidebar");
+
+        toggler.addEventListener("click", function () {
+            sidebar.classList.toggle("collapsed");
+        });
+    </script>
+    {% endif %}
+
+    <script src="{% static 'bs/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% if with_htmx %} {% include "parts/htmx.html" %} {% endif %}
+    {% if with_modal %} {% include "parts/modal.html" %} {% endif %}
+
+    {% block body_end %} {% endblock body_end %}
+</body>
+
+</html>

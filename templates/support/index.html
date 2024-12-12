@@ -1,0 +1,26 @@
+{% for ticket in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ ticket.name }}</td>
+    <td>{{ ticket.user.email }}</td>
+    <td>{{ ticket.created_on|date:'d/m/Y P' }}</td>
+    <td>
+        {% if ticket.is_resolved %}
+        <span class="badge bg-success">Resolve</span>
+        {% else %}
+        <span class="badge bg-danger">Open</span>
+        {% endif %}
+    </td>
+    <td>
+        <a href="{{ ticket.url }}" class="btn btn-primary">
+            <i class="bi bi-eye"></i>
+        </a>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td class="text-center text-muted" colspan="6">
+        No available ticket
+    </td>
+</tr>
+{% endfor %}

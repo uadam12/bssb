@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card mt-5 mx-auto" style="max-width: 600px;">
+    <div class="card-header">
+        <h3 class="card-title text-secondary text-center">{{ title }}</h3>
+    </div>
+
+    <div class="card-body">
+        <p>
+            <span class="text-danger">Are you sure you want to delete {{ model }}.</span><br>
+            <i class="bi bi-info-circle text-danger"></i> 
+            <span class="text-muted"><b>Note:</b> This action permanent and cannot be reversed.</span>
+        </p>
+    </div>
+
+    <div class="card-footer">
+        <form method="post" class="text-end">
+            {% csrf_token %}
+            <a href="{{ model.list_url }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Cancel
+            </a>
+    
+            <button class="btn btn-danger">
+                <i class="bi bi-trash"></i> Delete
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

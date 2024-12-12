@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat UI with Bootstrap 5</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .chat-container {
+      height: 80vh;
+      max-width: 900px;
+      margin: auto;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat-body {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #f8f9fa;
+    }
+
+    .chat-message {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .chat-message.sent {
+      flex-direction: row-reverse;
+    }
+
+    .chat-message .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .message-content {
+      max-width: 60%;
+    }
+
+    .message {
+      padding: 10px 15px;
+      border-radius: 15px;
+    }
+
+    .chat-message.sent .message {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .chat-message.received .message {
+      background-color: #e9ecef;
+    }
+
+    .chat-footer {
+      padding: 15px;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-footer .form-control {
+      border-radius: 20px;
+    }
+
+    .chat-footer .btn {
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      Chat Room
+    </div>
+    <div class="chat-body">
+      <!-- Sent Message -->
+      <div class="chat-message sent">
+        <div class="avatar" style="background-image: url('/static/images/user_avatar_1.jpg');"></div>
+        <div class="message-content">
+          <div class="fw-bold">You</div>
+          <div class="message">Hi! How can I help you today?</div>
+        </div>
+      </div>
+
+      <!-- Received Message -->
+      <div class="chat-message received">
+        <div class="avatar" style="background-image: url('/static/images/user_avatar_2.jpg');"></div>
+        <div class="message-content">
+          <div class="fw-bold">Alex</div>
+          <div class="message">Hello! I have a question about my account.</div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-footer d-flex">
+      <input type="text" class="form-control me-2" placeholder="Type a message...">
+      <button class="btn btn-primary">Send</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

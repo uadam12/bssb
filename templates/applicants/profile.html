@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% load static %}
+
+
+{% block content %} {% load crispy_forms_tags %}
+<h1 class="text-center">Profile Details</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            {% include "parts/user-info.html" %}
+        </div>
+    </div>
+    <div class="col-md-8 mt-md-0 mt-3">
+        <div class='card mb-2'>
+            <div class="card-header">
+                <!-- Nav tabs -->
+                {% include "parts/user-tabs.html" %}
+            </div>
+
+            <div class="card-body">
+                <div class='tab-content'>
+                    <!-- Tab panes -->
+                    <div class="tab-pane active" id="personal">
+                        <h2 class="text-center">Personal information</h2>
+                        <hr>
+                        {% crispy applicant_form %}
+                    </div>
+
+                    <div class="tab-pane fade" id="academic">
+                        <h2 class="text-center">Academic information</h2>
+                        <hr>
+                        {% crispy academic_form %}
+                    </div>
+
+                    <div class="tab-pane fade" id="account">
+                        <h2 class="text-center">Account Bank({{ user.account_bank.account_name }})</h2>
+
+                        {% crispy bank_form %}
+                    </div>
+
+                    <div class="tab-pane fade" id="schools">
+                        {% include "layouts/table.html" with title='Schools attended' %}
+                    </div>
+
+                    <div class="tab-pane fade" id="documents">
+                        <h2 class="text-center">Upload Documents</h2>
+                        <hr>
+                        {% include "parts/applicant-documents.html" %}
+                    </div>
+
+                    <div class="tab-pane fade" id="referees">
+                        <h2 class="text-center">Referee Information</h2>
+                        <hr>
+                        {% crispy referee_form %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

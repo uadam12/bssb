@@ -1,0 +1,23 @@
+{% for inst_type in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ inst_type }}</td>
+    <td>
+        <div class="btn-group" hx-target="#dialog">
+            <a href="{{ inst_type.update_url }}" hx-get="{{ inst_type.update_url }}" class="btn btn-warning">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <a href="{{ inst_type.delete_url }}" hx-get="{{ inst_type.delete_url }}" class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="3" class="text-center text-muted">
+        There is no available institution type
+    </td>
+</tr>
+{% endfor %}

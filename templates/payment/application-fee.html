@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% load static %}
+
+{% block content %}
+<div class="card mx-auto" style="max-inline-size: 600px;">
+    <div class="card-header">
+        <h3 class="card-title">{{ scholarship }} application</h3>
+    </div>
+
+    <div class="card-body">
+        <p>{{ scholarship.description }}</p>
+
+        <h5>You need to past the following criteria:</h5>
+        <ul>
+            {% for criterion in scholarship.criteria %}
+            <li>{{ criterion }}</li>
+            {% endfor %}
+        </ul>
+
+        <h5>You will be ask to upload the following documents:</h5>
+        <ul>
+            {% for requirement in scholarship.requirements.all %}
+            <li>{{ requirement }}</li>
+            {% endfor %}
+        </ul>
+
+        <strong>
+            Finally, you must also pay non refundable of <i class="amount">{{ scholarship.application_fee }}</i> as application FEE.
+        </strong>
+    </div>
+
+    <div class="card-footer">
+        <form method="post" class="text-center">
+            {% csrf_token %}
+            <div class="d-grid">
+                <button class="btn btn-success">Pay Now</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

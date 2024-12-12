@@ -1,0 +1,29 @@
+{% for scholarship in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ scholarship.title }}</td>
+    <td>{{ scholarship.application_commence }}</td>
+    <td>{{ scholarship.application_deadline }}</td>
+    <td>
+        <div class="btn-group"  hx-target="#dialog">
+            <a href="{{ scholarship.url }}" class="btn btn-primary">
+                <i class="bi bi-eye"></i>
+            </a>
+            
+            <a href="{{ scholarship.update_url }}" hx-get="{{ scholarship.update_url }}" class="btn btn-warning">
+                <i class="bi bi-pen"></i>
+            </a>
+
+            <a href="{{ scholarship.delete_url }}" hx-get="{{ scholarship.delete_url }}" class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center text-muted">
+        There is no available scholarship
+    </td>
+</tr>
+{% endfor %}

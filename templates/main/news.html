@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %} {% if articles %}
+<h2 class='text-center text-primary mb-4'>
+    Borno State Scholarship Board Updates
+</h2>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+{% for article in articles %}
+<div class="col">
+    <div class="card my-3">
+        <img src="{{article.headline_image.url}}" alt="" class="card-top-image">
+        <div class="card-body">
+            <h3 class="text-primary">
+                {{ article.headline }}
+            </h3>
+    
+            <p>
+                {{ article.content|truncatewords:20 }}
+            </p>
+    
+            <div class="text-end">
+                <a href="./{{ article.id }}" class="btn btn-primary">
+                    Read full
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+{% else %}
+<h2 class='text-center text-info'>
+    No available Updates yet
+</h2>
+{% endif %} {% endblock %}

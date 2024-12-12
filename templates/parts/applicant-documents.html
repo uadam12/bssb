@@ -1,0 +1,53 @@
+<div class="row" id="reg-documents">
+    <div class="col-md-7">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for document in documents %}
+                <div class="carousel-item {% if forloop.first %} active {% endif %}">
+                    <img class="d-block w-100" alt="{{ document.reg }}"
+                        src="{% if document.image %} {{ document.image.url }} {% else %} /static/imgs/no_image.png {% endif %}">
+                    
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>{{ document.reg }}</h5>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button class="carousel-control-prev" type="button"
+                data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next" type="button"
+                data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="col-md">
+        <form action="{% url 'applicant:save-document' %}" 
+            method="post" enctype="multipart/form-data" 
+            hx-encoding="multipart/form-data" hx-target="#reg-documents"
+            hx-post="{% url 'applicant:save-document' %}">
+
+            {% load crispy_forms_tags %} {% csrf_token %}
+            {{ document_forms.management_form }}
+
+            {% for document_form in document_forms %}
+            {% crispy document_form %}
+            {% endfor %}
+            
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-upload me-2"></i>
+                    Upload
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

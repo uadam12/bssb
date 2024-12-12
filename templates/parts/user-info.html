@@ -1,0 +1,83 @@
+<div class="card-body">
+    <div class="position-relative">
+        {% include "parts/profile-img.html" %}
+
+        <form hx-target="#profile-img"
+            hx-swap="outerHTML"
+            hx-encoding="multipart/form-data"
+            hx-post="{% url 'applicant:change-profile-picture' %}" 
+            hx-trigger="change from:input#id_picture">
+
+            <div class="d-none">
+                {{ profile_picture_form }}
+            </div>
+
+            <label for="id_picture" class="position-absolute top-50 start-50 translate-middle opacity-50">
+                <i class="bi bi-camera h1"></i>
+            </label>
+        </form>
+    </div>
+
+    <div class="text-center">
+        <h3 class="card-title">
+            {{ user.first_name }} {{ user.last_name }}
+        </h3>
+
+        <p>
+            {{ user.personal_info.gender }} - {{ user.personal_info.date_of_birth }}
+        </p>
+    </div> <br>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <b>Email: </b>
+                <span class="text-break" role="button">{{ user.email }}</span>
+            </div>
+        </li>
+
+        {% with info=user.personal_info %}
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <b>Phone Number: </b>
+                <span>{{ info.phone_number }}</span>
+            </div>
+        </li>
+
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <b>Date Of Birth: </b>
+                <span>{{ info.date_of_birth }}</span>
+            </div>
+        </li>
+
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <b>LGA: </b>
+                <span>{{ info.local_government_area }}</span>
+            </div>
+        </li>
+
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <b>Gender: </b>
+                <span>{{ info.gender }}</span>
+            </div>
+        </li>
+
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <b>NIN: </b>
+                <span>{{ info.nin }}</span>
+            </div>
+        </li>
+
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <b>BVN: </b>
+                <span>{{ info.bvn }}</span>
+            </div>
+        </li>
+        {% endwith %}
+    </ul>
+</div>

@@ -1,0 +1,15 @@
+{% for payment in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td><span class="amount">{{ payment.amount }}</span></td>
+    <td>{{ payment.paid_on }}</td>
+    <td>{{ payment.rrr }}</td>
+    <td>{{ payment.verified|yesno|capfirst }}</td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center text-muted">
+        There is no available payment yet
+    </td>
+</tr>
+{% endfor %}

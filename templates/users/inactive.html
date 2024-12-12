@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card my-5 mx-auto" style="max-width: 600px;">
+    <div class="card-header">
+        <h2 class="card-title text-success">Activate your account</h2>
+    </div>
+    <div class="card-body">
+        <p>
+            You need to activate your account to continue.
+        </p>
+    </div>
+    <div class="card-footer">
+        <div class="d-grid">
+            <a href="{% url 'main:news' %}" class="btn btn-success">
+                <i class="bi bi-newspaper"></i> Get Activation instuructions
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

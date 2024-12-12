@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <img src="{{ article.headline_image.url }}" alt="" class="card-top-image">
+
+    <div class="card-body">
+        <h3 class="text-center">{{ article.headline }}</h3>
+        {{ article.content|linebreaks }}
+
+        <div class="row">
+            <div class="col-sm">
+                Published on:
+            <small class="text-muted text-small">
+                {{ article.publish_on|date:'l d/m/Y @P' }}
+            </small>
+            </div>
+            <div class="col-sm text-end">
+                <a href="{{ article.list_url }}" class="btn btn-secondary">
+                    <i class="bi bi-newspaper"></i> Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

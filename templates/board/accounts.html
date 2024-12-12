@@ -1,0 +1,20 @@
+{% for account in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ account.account_name }}</td>
+    <td>{{ account.account_number }}</td>
+    <td>{{ account.bank }}</td>
+    <td>{{ account.user }}</td>
+    <td>
+        <a title="View user's account records" href="#" class="btn btn-primary">
+            <i class="bi bi-eye"></i>
+        </a>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="6" class="text-center text-muted">
+        There is no account for this bank yet.
+    </td>
+</tr>
+{% endfor %}

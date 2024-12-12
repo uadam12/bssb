@@ -1,0 +1,7 @@
+{% if ticket.is_resolved %}
+    <span class="badge bg-success">Resolve</span>
+{% else %}
+    <a href="{{ ticket.resolve_url }}" hx-get="{{ ticket.resolve_url }}" class="btn btn-danger">
+        <i class="bi bi-check-circle"></i> Mark as resolved.
+    </a>
+{% endif%}

@@ -1,0 +1,24 @@
+{% for notification in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ notification.message }}</td>
+    <td>{{ notification.visibility|capfirst }}</td>
+    <td>
+        <div class="btn-group" hx-target="#dialog">
+            <a href="{{ notification.update_url }}" hx-get="{{ notification.update_url }}" class="btn btn-warning">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <a href="{{ notification.delete_url }}" hx-get="{{ notification.delete_url }}" class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" class="text-center text-muted">
+        There is no available Frequently Asked Question
+    </td>
+</tr>
+{% endfor %}

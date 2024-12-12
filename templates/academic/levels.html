@@ -1,0 +1,25 @@
+{% for level in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ level.name }}</td>
+    <td>{{ level.code }}</td>
+    <td>{{ level.program }}</td>
+    <td>
+        <div class="btn-group" hx-target="#dialog">
+            <a href="{{ level.update_url }}" hx-get="{{ level.update_url }}" class="btn btn-warning">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <a href="{{ level.delete_url }}" hx-get="{{ level.delete_url }}" class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center text-muted">
+        There is no available level
+    </td>
+</tr>
+{% endfor %}

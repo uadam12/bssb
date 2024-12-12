@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post" class="card mx-auto mt-5" style="max-width: 600px;">
+    {% load crispy_forms_tags %} {% csrf_token %}
+    
+    <div class="card-header">
+        <h3 class="card-title text-success">{{ title }}</h3>
+    </div>
+
+    <div class="card-body">
+        {{ form|crispy }}
+    </div>
+
+    <div class="card-footer">
+        <div class="text-end">
+            <a href="{{ success_url|default:'#' }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Cancel
+            </a>
+    
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-send"></i> {{ submit_text|default:'Save' }}
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}

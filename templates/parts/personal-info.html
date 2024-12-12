@@ -1,0 +1,140 @@
+<h3 class="text-primary text-decoration-underline">Personal Information</h3>
+<p>
+    <b>Firstname:</b>
+    {{ applicant.first_name }}
+</p>
+
+<p>
+    <b>Lastname:</b>
+    {{ applicant.last_name }}
+</p>
+
+<p>
+    <b>Email:</b>
+    <a href="mailto:{{ applicant.email }}">
+        {{ applicant.email }}
+    </a>
+</p>
+
+{% with info=applicant.personal_info %}
+<p>
+    <b>Gender:</b>
+    {{ info.gender }}
+</p>
+
+<p>
+    <b>Phone Number:</b>
+    {{ info.phone_number }}
+</p>
+
+<p>
+    <b>Date Of Birth:</b>
+    {{ info.date_of_birth }}
+</p>
+
+<p>
+    <b>Place Of Birth:</b>
+    {{ info.place_of_birth }}
+</p>
+
+<p>
+    <b>National Identification Number(NIN):</b>
+    {{ info.nin }}
+</p>
+
+<p>
+    <b>Bank Verification Number(BVN):</b>
+    {{ info.bvn }}
+</p>
+
+<p>
+    <b>Local Government Area(LGA):</b>
+    {{ info.local_government_area }}
+</p>
+
+<p>
+    <b>Guardian Fullname:</b>
+    {{ info.guardian_name }}
+</p>
+
+<p>
+    <b>Residential Address:</b>
+    {{ info.residential_address }}
+</p>
+
+{% endwith %}
+
+{% with academic=applicant.academic_info %}
+<h3 class="text-primary text-decoration-underline mt-3">Academic Information</h3>
+<p>
+    <b>Institution:</b>
+    {{ academic.institution }}
+</p>
+
+<p>
+    <b>Program:</b>
+    {{ academic.program }}
+</p>
+
+<p>
+    <b>Course Of Study:</b>
+    {{ academic.course_of_study }}
+</p>
+
+<p>
+    <b>Current Level:</b>
+    {{ academic.current_level }}
+</p>
+
+<p>
+    <b>ID Number:</b>
+    {{ academic.id_number }}
+</p>
+
+<p>
+    <b>Year Of Addmission:</b>
+    {{ academic.year_of_admission }}
+</p>
+
+<p>
+    <b>Year Of Graduation:</b>
+    {{ academic.year_of_graduation }}
+</p>
+{% endwith %}
+
+{% with account=applicant.account_bank %}
+<h3 class="text-primary text-decoration-underline mt-3">Account Information</h3>
+<p>
+    <b>Account Bank:</b>
+    {{ account.bank }}
+</p>
+
+<p>
+    <b>Account Name:</b>
+    {{ account.account_name }}
+</p>
+
+<p>
+    <b>Account Number:</b>
+    {{ account.account_number }}
+</p>
+{% endwith %}
+
+
+{% with referee=applicant.referee %}
+<h3 class="text-primary text-decoration-underline mt-3">Referee Information</h3>
+<p>
+    <b>Referee Fullname:</b>
+    {{ referee.fullname }}
+</p>
+
+<p>
+    <b>Referee Occupation:</b>
+    {{ referee.occupation }}
+</p>
+
+<p>
+    <b>Referee Phone Number:</b>
+    {{ referee.phone_number }}
+</p>
+{% endwith %}

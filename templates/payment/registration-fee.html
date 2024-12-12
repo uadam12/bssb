@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% load static %}
+
+{% block content %}
+<div class="card mx-auto" style="max-inline-size: 600px;">
+    <div class="card-header">
+        <h3 class="card-title">Dear {{user}}</h3>
+    </div>
+
+    <div class="card-body">
+        <p>
+            Welcome to <strong class="text-underlined">Borno State Scholarship Board</strong>! <br>
+            To complete your registration and have access to all available scholarships for you,
+            please pay the one-time registration fee of <b class="amount">{{ amount|floatformat:2 }}</b>
+        </p>
+
+        <p>
+            Once the payment is processed, your account will be activated instanly and you'll be able to continue with
+            your applications.
+        </p>
+    </div>
+
+    <div class="card-footer">
+        <form class="d-grid" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+                Pay Now
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

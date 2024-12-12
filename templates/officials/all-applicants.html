@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    {% if filter_form %}
+    <div class="col-md-3 order-md-2 mt-md-5">
+        <h3>Filter applicants</h3>
+
+        <form hx-target="#applicants" hx-trigger="submit, change" hx-get="{{ request.path }}">
+            {% load crispy_forms_tags %}
+            {% crispy filter_form %}
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="col-md order-md-1">
+        <h2 class="text-success my-3">Applicants List</h2>
+
+        <div class="accordion" id="applicants" hx-trigger="load, dataChanged from:body"
+        hx-get="{{ data_url|default:request.path }}" hx-target="this">
+            {% include 'officials/applicants.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

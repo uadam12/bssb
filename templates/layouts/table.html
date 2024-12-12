@@ -1,0 +1,25 @@
+{% if not add_url %} <h2 class="text-success">{{ title }}</h2> {% else %}
+<div class="d-flex justify-content-between align-items-center">
+    <h2 class="text-success">{{ title }}</h2>
+
+    <a href="{{ add_url }}" hx-get="{{ add_url }}" hx-target="#dialog" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Add
+    </a>
+</div>
+{% endif %}
+
+
+<div class="table-responsive mt-2">
+    <table class="table table-bordered table-hover table-striped">
+        <tr>
+            {% for table_header in table_headers %}
+            <th>{{ table_header }}</th>
+            {% endfor %}
+        </tr>
+
+        <tbody id="data" hx-trigger="dataChanged from:body"
+            hx-get="{{ data_url|default:request.path }}" hx-target="this">
+            {% include data_template %}
+        </tbody>
+    </table>
+</div>

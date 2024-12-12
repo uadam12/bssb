@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %} {% load static %}
+<h2 class='text-center text-success'>
+    About Borno State Scholarship Board
+</h2>
+
+<div class="row">
+    <div class="col-md-5 text-center">
+        <img src="{% static 'imgs/logo.png' %}" alt="Borno State Scholarship Board" class="img-fluid">
+    </div>
+
+    <div class="col-md-7">
+        {% for about in abouts %}
+        <p>{{ about }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

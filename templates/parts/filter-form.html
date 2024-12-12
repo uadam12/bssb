@@ -1,0 +1,14 @@
+<div class="card mb-3">
+    <div class="card-header">
+        <h3 class="card-title" data-bs-toggle="collapse" data-bs-target="#filtering-card">
+            {{ filter_label|default:'Filter Records' }}
+        </h3>
+    </div>
+
+    <div id="filtering-card" class="collapse">
+        <div class="card-body">
+            {% load crispy_forms_tags %}
+            {% crispy form %}
+        </div>
+    </div>
+</div>

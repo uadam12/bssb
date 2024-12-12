@@ -1,0 +1,24 @@
+{% for lga in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ lga.name }}</td>
+    <td>{{ lga.code }}</td>
+    <td>
+        <div class="btn-group" hx-target="#dialog">
+            <a href="{{ lga.update_url }}" hx-get="{{ lga.update_url }}" class="btn btn-warning">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <a href="{{ lga.delete_url }}" hx-get="{{ lga.delete_url }}" class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" class="text-center text-muted">
+        There is no available local government area
+    </td>
+</tr>
+{% endfor %}

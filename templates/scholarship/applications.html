@@ -1,0 +1,27 @@
+{% for application in data %}
+<tr id="app-{{ application.id }}">
+    <td>{{ forloop.counter }}</td>
+
+    <td>
+        <a href="{{ application.url }}" target="_blank" class="btn btn-text">
+            {{ application.applicant|default:'No Name' }} <i class="bi bi-eye"></i>
+        </a>
+    </td>
+
+    <td>
+        {{ application.account_bank }} <br>
+        {{ application.account_name }} <br>
+        {{ application.account_number }}
+    </td>
+
+    <td hx-target="this">
+        {% include "parts/application-status.html" %}
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" class="text-center text-muted">
+        No application found
+    </td>
+</tr>
+{% endfor %}

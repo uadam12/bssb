@@ -1,0 +1,23 @@
+<form hx-post="{{ request.path }}" class="modal-content">
+    {% load crispy_forms_tags %}
+
+    <div class="modal-header">
+        <h3 class="modal-title text-success">
+            {{ header }}
+        </h3>
+    </div>
+
+    <div class="modal-body">
+        {{ form|crispy }}
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-arrow-left"></i> Cancel
+        </button>
+
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-send"></i> Save
+        </button>
+    </div>
+</form>

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-success">
+            Borno State Scholarship board
+            <a href="{% url 'board:update' %}" class="btn btn-text">
+                <i class="bi bi-pen"></i>
+            </a>
+        </h2>
+
+        <p class="text-center mb-4">
+            <b>{{ board.motto }}</b>
+        </p>
+
+        {% for about in board.abouts %}
+        <p>{{ about }}</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-success mb-4">Eligibility Criteria</h2>
+
+        <ul class="list-group list-group-flush">
+            {% for criterion in board.criteria %}
+            <li class="list-group-item">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                {{ criterion }}
+            </li>
+            {% endfor %}
+
+            <li class="list-group-item">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                New applicant must pay <span class="amount">{{ board.registration_fee }}</span> as registration FEE
+            </li>
+
+            <li class="list-group-item">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                {% if board.registration_is_open %}
+                New applicant can register by visiting portal registration page
+                {% else %}
+                New applicant must wait for the portal to be open before registering.
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</section>
+
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-success mb-4">Registration documents</h2>
+
+        <ul class="list-group list-group-flush">
+            {% for document in registration_document %}
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between justify-items-center">
+                    <div>
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        New applicants {% if document.required %}
+                        are required to {% else %} may {% endif %}
+                        upload their <b>{{ document }}</b>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}

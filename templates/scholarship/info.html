@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center text-success">
+    {{ scholarship.title }}
+</h2>
+
+{% for pragraph in scholarship.description.splitlines %}
+<p>{{ pragraph }}</p>
+{% endfor %}
+
+{% if scholarship.criteria %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-success mb-4">Eligibility Criteria</h2>
+
+        <ul class="list-group list-group-flush">
+            {% for criterion in scholarship.criteria %}
+            <li class="list-group-item">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                {{ criterion }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endif %}
+
+<section class="py-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-success">Field Of Studies</h2>
+        <a href="{{ scholarship.field_of_studies_url }}" class="btn btn-success">
+            <i class="bi bi-gear"></i>
+        </a>
+    </div>
+
+    <ul class="list-group list-group-flush">
+        {% for field_of_study in scholarship.field_of_studies.all %}
+        <li class="list-group-item">
+            <i class="bi bi-check-circle text-success me-2"></i>
+            {{ field_of_study }}
+        </li>
+        {% empty %}
+        <li class="list-group-item">
+            <i class="bi bi-info-circle text-info me-2"></i>
+            No targeted field of study
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% include 'layouts/table.html' with title='Application Documents' table_headers=table_headers %}
+
+<div class="text-end">
+    <div class="btn-group">
+        <a href="{{ scholarship.applications_url }}" class="btn btn-outline-primary" title="Applications">
+            <i class="bi bi-files"></i>
+        </a>
+
+        <a href="{{ scholarship.disbursement_url }}" class="btn btn-outline-primary" title="Disbursements">
+            <i class="amount"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}

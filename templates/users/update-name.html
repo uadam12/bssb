@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head_end %}
+<style>
+    .checkbox-columns div {
+        width: 320px;
+        max-width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    {% csrf_token %}
+    {% load crispy_forms_tags %}
+    
+    <div class="card-header">
+        <h3 class="card-title text-secondary text-center">
+            Update {{ model }}
+        </h3>
+    </div>
+
+    <form class="card-body" method="post">
+        {% crispy form %}
+
+        <div class="text-end">
+            <button class="btn btn-primary">Update Name</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

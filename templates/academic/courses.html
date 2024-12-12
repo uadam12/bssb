@@ -1,0 +1,24 @@
+{% for course in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ course.title }}</td>
+    <td>{{ course.field_of_study }}</td>
+    <td>
+        <div class="btn-group" hx-target="#dialog">
+            <a href="{{ course.update_url }}" hx-get="{{ course.update_url }}" class="btn btn-warning">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <a href="{{ course.delete_url }}" hx-get="{{ course.delete_url }}" class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" class="text-center text-muted">
+        There is no available course
+    </td>
+</tr>
+{% endfor %}

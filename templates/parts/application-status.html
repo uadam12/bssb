@@ -1,0 +1,11 @@
+{% if application.status != 'approved' %}
+<button hx-post="{{ application.approve_url }}" class="btn btn-success">
+    <i class="bi bi-check-circle"></i>
+</button>
+{% endif %}
+
+{% if application.status != 'rejected' %}
+<button hx-post="{{ application.reject_url }}" class="btn btn-danger">
+    <i class="bi bi-x-circle"></i>
+</button>
+{% endif %}

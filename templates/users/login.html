@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post" class="card mt-5 mx-auto" style="max-width: 500px;">
+    {% csrf_token %}
+    {% load crispy_forms_tags %}
+
+    <div class="card-header">
+        <h3 class="card-title text-success">Welcome Back</h3>
+    </div>
+
+    <div class="card-body">
+        {% crispy form %}
+
+        <div class="text-end">
+            <a class="text-decoration-none" href="{% url 'user:forgot-password' %}">
+                Forgot your password?
+            </a>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <div class="text-end">
+            <a href="{% url 'user:register' %}" class="btn btn-success">
+                <i class="bi bi-person-plus"></i>
+                Create an account
+            </a>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Login
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock content %}

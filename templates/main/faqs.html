@@ -1,0 +1,28 @@
+{% for faq in data %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ faq.question }}</td>
+    <td>{{ faq.answer|truncatewords:7 }}</td>
+    <td>
+        <div class="btn-group" hx-target="#dialog">
+            <a href="{{ faq.url }}" class="btn btn-primary">
+                <i class="bi bi-eye"></i>
+            </a>
+
+            <a href="{{ faq.update_url }}" hx-get="{{ faq.update_url }}" class="btn btn-warning">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <a href="{{ faq.delete_url }}" hx-get="{{ faq.delete_url }}" class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" class="text-center text-muted">
+        There is no available Frequently Asked Question
+    </td>
+</tr>
+{% endfor %}

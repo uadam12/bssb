@@ -1,0 +1,20 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Delete Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <p class="text-danger">Are you sure you want to delete {{ model }}?</p>
+        <p class="text-muted">This action is permanent and cannot be reverse.</p>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-arrow-left"></i> Cancel
+        </button>
+        <button type="submit" class="btn btn-danger" hx-post = "{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' >
+            <i class="bi bi-trash"></i> Delete
+        </button>
+    </div>
+</div>

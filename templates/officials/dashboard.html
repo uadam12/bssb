@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Officials Dashboard</h1>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Scholarships</h3>
+                <hr>
+                <p>{{ total_scholarships }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Open Scholarships</h3>
+                <hr>
+                <p>{{ total_open_scholarships }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Administrators</h3>
+                <hr>
+                <p>{{ total_admins }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Guest Users</h3>
+                <hr>
+                <p>{{ total_guests }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Applicants</h3>
+                <hr>
+                <p>{{ total_applicants }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Blocked Applicants</h3>
+                <hr>
+                <p>{{ total_blocked_users }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

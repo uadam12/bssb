@@ -1,0 +1,25 @@
+{% for school in schools %}
+<tr>
+    <td>{{ school.school_name }}</td>
+    <td>{{ school.certificate_obtained }}</td>
+    <td>{{ school.year_from }}</td>
+    <td>{{ school.year_to }}</td>
+    <td>
+        <div class="btn-group">
+            <button class="btn btn-warning" hx-get="{% url 'applicant:update-school' pk=school.pk %}" hx-target="#dialog">
+                <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-danger" hx-get="{% url 'applicant:delete-school' pk=school.pk %}" hx-target="#dialog">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    </td>
+</tr>
+
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center text-muted">
+        Schools attended will appear here
+    </td>
+</tr>
+{% endfor %}

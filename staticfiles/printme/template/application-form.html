@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Application Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Scholarship Application Form</h1>
+        <form>
+            <!-- Personal Details Section -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5>Personal Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email address" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academic Information Section -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5>Academic Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="institution" class="form-label">Institution Name</label>
+                            <input type="text" class="form-control" id="institution" placeholder="Enter your institution name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="program" class="form-label">Program of Study</label>
+                            <input type="text" class="form-control" id="program" placeholder="Enter your program of study" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="matricNo" class="form-label">Matriculation Number</label>
+                            <input type="text" class="form-control" id="matricNo" placeholder="Enter your matric number" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cgpa" class="form-label">Current CGPA</label>
+                            <input type="number" step="0.01" class="form-control" id="cgpa" placeholder="Enter your current CGPA" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Upload Section -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5>Upload Documents</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="identityDoc" class="form-label">Identity Document (e.g., NIN, Passport)</label>
+                            <input type="file" class="form-control" id="identityDoc" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="transcript" class="form-label">Academic Transcript</label>
+                            <input type="file" class="form-control" id="transcript" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Section -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-cloud-arrow-up"></i> Submit Application</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

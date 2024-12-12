@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ institution }}</h1>
+    <small class="text-muted">
+        List of students of each institution is coming soon
+    </small>
+    <p>
+        <a href="{% url 'academic:institution-programs' i_id=institution.id %}">View Programs</a>
+    </p>
+{% endblock %}

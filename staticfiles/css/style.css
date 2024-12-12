@@ -1,0 +1,172 @@
+/* Loader Section */
+body,
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages-container {
+    flex: 1;
+    background-color: #e5ddd5;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    max-width: 100%;
+}
+
+.message.received {
+    flex-direction: row;
+}
+
+.message.sent {
+    flex-direction: row-reverse;
+    margin-left: auto;
+}
+
+.message .avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.message.sent .avatar {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.message-content {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.message.sent .message-content {
+    background-color: #dcf8c6;
+}
+
+.sender-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.message p {
+    margin: 0;
+}
+
+.new-message-form {
+    background-color: #ededed;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.message-input {
+    flex-grow: 1;
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.send-button {
+    margin-left: 10px;
+}
+
+#loader {
+    place-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .6);
+    transform: scale(0);
+    transition: transform 0.5s;
+}
+
+#loader.show,
+#request-indicator.show {
+    transform: scale(1);
+}
+
+#loader>div {
+    background-color: var(--bs-light);
+    color: var(--bs-green);
+    padding: 12px 20px;
+    border-radius: 10px;
+}
+
+#loader img {
+    width: 3cm;
+    height: auto;
+}
+
+.amount::before {
+    content: '\20A6 ';
+    margin-inline-end: 2px;
+}
+
+#request-indicator {
+    position: fixed;
+    top: 5mm;
+    right: 5mm;
+    padding: 0.2cm;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: fit-content;
+    height: fit-content;
+    border-radius: 10px;
+    transform: scale(0);
+    transition: transform 0.5s;
+    text-align: end;
+}
+
+#request-indicator>img {
+    width: 1.5cm;
+    height: auto;
+}
+
+.htmx-indicator {
+    display: none;
+    transition: transform 0.5s;
+}
+
+.htmx-request .htmx-indicator,
+.htmx-indicator.htmx-indicator {
+    display: inline;
+    transform: scale(1);
+}
+
+#notificationsDropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    min-width: 85%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1050;
+}
+
+#notificationsDropdown.show {
+    display: block;
+}
+
+#notificationsList p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+@media screen and (min-width: 765px) {
+    #notificationsDropdown {
+        left: 0
+    }
+}

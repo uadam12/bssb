@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center text-primary">
+    {{ scholarship }} application
+</h1>
+
+<p class="text-danger">
+    Please review your current profile information before applying for this scholarship, as you will not be able to
+    update or edit your application details once you submitted it. <br>
+    If there is some correction(s) that you need to make for your profile information, please we urged you to do so
+    before applying. <br>
+    <b>Good Luck!!!</b>
+</p>
+
+
+<h3 class="text-decoration-underline">Academic Information</h3>
+<div class="row">
+    <div class="col-md-5">
+        <h5>Instutution</h5>
+        <p>{{ user.academic_info.institution }}</p>
+    </div>
+
+    <div class="col-md-3">
+        <h5>Program</h5>
+        <p>{{ user.academic_info.program }}</p>
+    </div>
+
+    <div class="col-md-4">
+        <h5>Course of study</h5>
+        <p>{{ user.academic_info.course_of_study }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <h5>Current Level</h5>
+        <p>{{ user.academic_info.current_level }}</p>
+    </div>
+
+    <div class="col-md-3">
+        <h5>ID Number</h5>
+        <p>{{ user.academic_info.id_number }}</p>
+    </div>
+
+    <div class="col-md-3">
+        <h5>Admission Year</h5>
+        <p>{{ user.academic_info.year_of_admission }}</p>
+    </div>
+
+    <div class="col-md-3">
+        <h5>Graduation Year</h5>
+        <p>{{ user.academic_info.year_of_graduation }}</p>
+    </div>
+</div>
+
+<h3 class="text-decoration-underline">Account Information</h3>
+<div class="row">
+    <div class="col-md-4">
+        <h5>Account Bank</h5>
+        <p>{{ user.account_bank.bank }}</p>
+    </div>
+
+    <div class="col-md-4">
+        <h5>Account Name</h5>
+        <p>{{ user.account_bank.account_name }}</p>
+    </div>
+
+    <div class="col-md-4">
+        <h5>Account Number</h5>
+        <p>{{ user.account_bank.account_number }}</p>
+    </div>
+</div>
+
+
+<form method="post" enctype="multipart/form-data" class="card">
+    {% load crispy_forms_tags %} {% csrf_token %}
+    {{ forms.management_form }}
+
+    <div class="card-header">
+        <h2 class="text-success">Upload Application Documents</h2>
+    </div>
+
+    <div class="card-body">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for form in forms %}
+            <div class="col">
+                {% crispy form %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <div class="text-end">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-upload"></i> Complete Application
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}
