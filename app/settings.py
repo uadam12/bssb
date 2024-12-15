@@ -155,8 +155,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # More settings
-MEDIA_ROOT = env('MEDIA_ROOT', BASE_DIR / 'media')
-MEDIA_URL = env('MEDIA_URL', '/media/')
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', BASE_DIR / 'media')
+MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
