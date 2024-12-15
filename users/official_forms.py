@@ -74,14 +74,3 @@ class OfficialForm(forms.ModelForm):
             user.save()
         
         return user
-
-class GuestForm(UserForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.access_code = 2
-        if commit: user.save()
-        
-        return user

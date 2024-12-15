@@ -18,15 +18,15 @@ def login_required(view):
 
         if not user.is_authenticated:
             messages.info(request, 'You need to login to access this page.')
-            return unauthorized_response(request, 'user:login')
+            return unauthorized_response(request, 'auth:signin')
         
         if user.is_blocked:
             messages.error(request, 'Looks like your account is blocked.')
-            return unauthorized_response(request, 'user:block')
+            return unauthorized_response(request, 'auth:block')
 
         if not user.is_active:
             messages.info(request, 'You need to activate your to access this page.')
-            return unauthorized_response(request, 'user:activation')
+            return unauthorized_response(request, 'auth:activation')
         
         return view(request, *args, **kwargs)
     return wrapper

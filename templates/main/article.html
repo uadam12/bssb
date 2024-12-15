@@ -2,11 +2,13 @@
 
 {% block content %}
 <div class="card">
-    <img src="{{ article.headline_image.url }}" alt="" class="card-top-image">
+    <img src="{{ article.image }}" alt="" class="card-top-image">
 
     <div class="card-body">
         <h3 class="text-center">{{ article.headline }}</h3>
-        {{ article.content|linebreaks }}
+        {% for paragraph in article.content.splitlines %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
 
         <div class="row">
             <div class="col-sm">

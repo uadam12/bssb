@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from app import render
+from app.auth import officials_only
 from app.views import create_view, delete_view, update_view, data_view
 from applicant.models import AccountBank
 from applicant.filters import AccountFilter
@@ -14,6 +15,7 @@ from .forms import (
 )
 
 
+@officials_only(main_admin_only=True)
 def index(request):
     board = Board.load()
     registration_document = RegistrationDocument.objects.all()
@@ -22,11 +24,13 @@ def index(request):
         request, 'board/index', board=board, registration_document=registration_document
     )
 
+@officials_only(main_admin_only=True)
 def update(request):
     return update_view(request, BoardForm, Board.load(), 'Update board settings', save_instantly=True)
 
 
 # Registration Documents
+@officials_only(main_admin_only=True)
 def reg_docuements(request):
     return data_view(
         request, data=RegistrationDocument.objects.all(),
@@ -36,12 +40,14 @@ def reg_docuements(request):
         title='Registration Documents'
     )
     
+@officials_only(main_admin_only=True)
 def create_reg_docuement(request):
     return create_view(
         request, form_class=RegistrationDocumentForm, 
         success_url='board:reg-documents', form_header='Create Registration Document'
     )
 
+@officials_only(main_admin_only=True)
 def update_reg_document(request, id):
     reg_doc = get_object_or_404(RegistrationDocument, id=id)
     
@@ -51,6 +57,7 @@ def update_reg_document(request, id):
         save_instantly=True
     )
 
+@officials_only(main_admin_only=True)
 def delete_reg_document(request, id):
     reg_doc = get_object_or_404(RegistrationDocument, id=id)
     
@@ -59,6 +66,7 @@ def delete_reg_document(request, id):
     )
     
 # Banks
+@officials_only()
 def banks(request):
     filter = BankFilter(request.GET, queryset=Bank.objects.all())
     
@@ -70,6 +78,7 @@ def banks(request):
         data_template='board/banks.html', title='Available Banks',
     )
 
+@officials_only()
 def accounts(request):
     filter = AccountFilter(request.GET, queryset=AccountBank.objects.all())
  
@@ -80,26 +89,30 @@ def accounts(request):
         table_headers=['S/N', "Account Name", 'Account Number', 'Bank', 'Account Holder', 'Actions']
     )
 
+@officials_only(main_admin_only=True)
 def create_bank(request):
     return create_view(
         request, form_class=BankForm, 
         success_url='board:banks', form_header='Create Bank'
     )
 
+@officials_only(main_admin_only=True)
 def update_bank(request, code):
     bank = get_object_or_404(Bank, code=code)
-    
+
     return update_view(
         request, instance=bank, 
         form_class=BankForm, 
         form_header='Update Bank'
     )
     
+@officials_only(main_admin_only=True)
 def delete_bank(request, code):
     bank = get_object_or_404(Bank, code=code)
     return delete_view(request, model=bank, header='Delete Bank')
 
 # Local Government Area(LGA)
+@officials_only()
 def lgas(request):
     filter = LGAFilter(request.GET, queryset=LGA.objects.all())
     
@@ -112,12 +125,14 @@ def lgas(request):
         table_headers=['S/N', "Name", 'Code', 'Actions']
     )
 
+@officials_only(main_admin_only=True)
 def create_lga(request):
     return create_view(request, 
         form_header='Create Local Government Area',
         form_class=LGAForm, success_url='board:lgas', 
     )
 
+@officials_only(main_admin_only=True)
 def update_lga(request, code):
     lga = get_object_or_404(LGA, code=code)
     
@@ -126,6 +141,7 @@ def update_lga(request, code):
         form_header='Update Local Government Area'
     )
     
+@officials_only(main_admin_only=True)
 def delete_lga(request, code):
     lga = get_object_or_404(LGA, code=code)
     return delete_view(request, model=lga, header='Delete Local Government Area')

@@ -37,11 +37,12 @@ class InstitutionForm(forms.ModelForm):
 class ProgramForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['placeholder'] = 'Enter Program Name'
+        self.fields['name'].widget.attrs['placeholder'] = 'Enter program name'
+        self.fields['level_display_name'].widget.attrs['placeholder'] = 'Enter level display name'
 
     class Meta:
         model = Program
-        fields = ("name", )
+        fields = ("name", "level_display_name")
         
 class FieldOfStudyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

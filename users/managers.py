@@ -27,8 +27,17 @@ class BSSBManager(BaseUserManager):
         
         return self.create_user(email, password, **extra_fields)
     
-    def officials(self):
-        return self.get_queryset().filter(access_code__gt=1)
+    def blocks(self):
+        return self.get_queryset().filter(is_blocked=True)
     
     def applicants(self):
-        return self.get_queryset().filter(access_code__lt=2)
+        return self.get_queryset().filter(access_code=1)
+    
+    def non_main_admins(self):
+        return self.get_queryset().filter(access_code__lt=4)
+    
+    def guests(self):
+        return self.get_queryset().filter(access_code=2)
+    
+    def admins(self):
+        return self.get_queryset().filter(access_code=3)

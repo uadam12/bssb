@@ -71,7 +71,7 @@ def update_view(request, form_class, instance, form_header,
 
     if is_post(request):
         form = form_class(instance=instance, data=request.POST, files=request.FILES)
-        
+
         if form.is_valid():
             model = form.save(save_instantly)
             

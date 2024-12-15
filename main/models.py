@@ -1,4 +1,7 @@
+import os
 from django.db import models
+from django.conf import settings
+from django.templatetags.static import static
 from django.urls import reverse, reverse_lazy
 from app import compress
 from users.models import User
@@ -7,13 +10,21 @@ from users.models import User
 # Create your models here.
 class Article(models.Model):
     headline = models.CharField(max_length=100)
-    headline_image = models.ImageField(default='/headline.png', upload_to='headline-images', blank=True)
+    headline_image = models.ImageField(null=True, blank=True, upload_to='headline-images')
     content = models.TextField()
     is_public = models.BooleanField(default=True)
     publish_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     add_url = reverse_lazy('main:create-article')
     list_url = reverse_lazy('main:articles')
+    
+    @property
+    def image(self):
+        file = os.path.join(settings.MEDIA_ROOT, self.headline_image.name)
+        if self.headline_image and os.path.isfile(file):
+            return self.headline_image.url
+
+        return static('imgs/logo.png')
 
     @property
     def url(self):

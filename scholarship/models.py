@@ -1,5 +1,7 @@
-import random, string
+import random, string, os
 from django.db import models
+from django.conf import settings
+from django.templatetags.static import static
 from django.urls import reverse, reverse_lazy
 from django.core.exceptions import ValidationError
 from app import compress
@@ -116,7 +118,7 @@ class Application(models.Model):
     status = models.CharField(max_length=20, choices=STATUS, default='incomplete')
     application_fee_payment = models.ForeignKey(Payment,null=True, on_delete=models.CASCADE)
     submitted_at = models.DateTimeField(auto_now_add=True)
-    
+
     instituion = models.ForeignKey(Institution, on_delete=models.RESTRICT, related_name='applications')
     program = models.ForeignKey(Program, on_delete=models.RESTRICT, related_name='applications')
     field_of_study = models.ForeignKey(FieldOfStudy, on_delete=models.RESTRICT, related_name='applications')
@@ -129,10 +131,18 @@ class Application(models.Model):
     account_bank = models.ForeignKey(Bank, on_delete=models.RESTRICT, related_name='applications')
     account_name = models.CharField(max_length=50)
     account_number = models.CharField(max_length=10)
-    
+
     referee_name = models.CharField(max_length=50)
-    referee_phone_number = models.CharField(max_length=10)
+    referee_phone_number = models.CharField(max_length=15)
     referee_occupation = models.CharField(max_length=50)
+ 
+    @property
+    def get_documents(self) -> list:
+        app_documents = ApplicationDocument.objects.filter(scholarship=self.scholarship)
+        for app_document in app_documents:
+            Document.objects.get_or_create(app_document=app_document, application=self)
+
+        return Document.objects.filter(application=self)
 
     @property
     def url(self):
@@ -200,7 +210,7 @@ class Application(models.Model):
         super().clean()
         
         applied_for_exclusive_scholarship = Application.objects.filter(
-            user=self.applicant, scholarship__exclusive=True
+            applicant=self.applicant, scholarship__exclusive=True
         ).exists()
         
         if applied_for_exclusive_scholarship:
@@ -228,9 +238,17 @@ class Document(models.Model):
     application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='documents')
     app_document = models.ForeignKey(ApplicationDocument, on_delete=models.CASCADE, related_name='documents')
     
+    @property
+    def url(self):
+        file = os.path.join(settings.MEDIA_ROOT, self.image.name)
+        if self.image and os.path.isfile(file):
+            return self.image.url
+
+        return static('imgs/no_image.png')
+    
     def save(self, *args, **kwargs):
         try:
-            self.picture = compress(self.image)
+            self.image = compress(self.image)
         except: pass
         
         super().save(*args, **kwargs)

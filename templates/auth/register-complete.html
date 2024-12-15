@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card my-5 mx-auto" style="max-width: 600px;">
+    <div class="card-header">
+        <h2 class="card-title text-success">Registration Complete</h2>
+    </div>
+
+    <div class="card-body">
+        <p>
+            Thank you for registering with Borno State Scholarship Board.<br>
+            Go to your email address to verify your account.<br> 
+            If you did not get the instuructions, enter your email address below to resend it.
+        </p>
+    </div>
+
+    <div class="card-footer">
+        <form method='post' class='input-group'>
+            {% csrf_token %}
+            <input type='email' name='email' class='form-control' placeholder='Enter your email address' required>
+            <button type='submit' class='btn btn-success form-group-text'>
+                <i class='bi bi-send'></i> Resend
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -96,7 +96,7 @@ def verify_application_fee(request, id):
             payment_obj, _ = Payment.objects.get_or_create(
                 amount=amount,
                 payment_type = 2,
-                rrr=rrr
+                rrr=rrr, verified = True
             )
             application.application_fee_payment = payment_obj
             application.save()

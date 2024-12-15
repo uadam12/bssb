@@ -12,14 +12,18 @@
             <ul class="list-group list-group-flush">
                 {% for field_of_study in program.field_of_studies.all %}
                 <li class="list-group-item">
+                    {% with id=field_of_study.pk %}
                     <div class="form-check form-switch">
                         <input type="checkbox" 
-                            value="{{ field_of_study.pk }}" 
-                            name="field_of_studies" id="field-of-study-{{ field_of_study.pk }}"
-                            {% if field_of_study in scholarship.field_of_studies.all %} selected {% endif %}
-                            class="form-check-input">
-                        <label for="field-of-study-{{ field_of_study.pk }}" class="form-check-input-label">{{ field_of_study }}</label>
+                            value="{{ id }}" name="field_of_studies" 
+                            id="field-of-study-{{ id }}" class="form-check-input" 
+                            {% if field_of_study in scholarship.field_of_studies.all %} checked {% endif %}>
+
+                        <label for="field-of-study-{{ id }}" class="form-check-input-label">
+                            {{ field_of_study }}
+                        </label>
                     </div>
+                    {% endwith %}
                 </li>
                 {% endfor %}
             </ul>

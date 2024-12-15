@@ -17,7 +17,7 @@ class User(AbstractUser):
         (1, 'Applicant'),
         (2, 'Guest User'),
         (3, 'Administrator'),
-        (4, 'Main Admin')
+        (4, 'Main Administrator')
     )
     username = None
     email = models.EmailField(_('email address'), unique=True)
@@ -25,10 +25,13 @@ class User(AbstractUser):
     is_blocked = models.BooleanField(default=False)
     has_completed_profile = models.BooleanField(default=False)
     paid_registration_fee = models.BooleanField(default=False)
-    picture = models.ImageField(default='/static/default-user.svg', upload_to='profiles')
+    picture = models.ImageField(null=True, blank=True, upload_to='profiles')
     last_time_read_notifications = models.DateTimeField(default=timezone.now, blank=True)
-    registration_fee_payment = models.OneToOneField(Payment, default=None, null=True, on_delete=models.SET_DEFAULT, related_name='applicant')
     otp_enabled = models.BooleanField(default=False)
+    registration_fee_payment = models.OneToOneField(
+        Payment, default=None, null=True, 
+        on_delete=models.SET_DEFAULT, related_name='applicant'
+    )
 
     
     USERNAME_FIELD = 'email'
@@ -84,6 +87,10 @@ class User(AbstractUser):
         viewname = 'applicant:profile' if self.access_code < 2 else 'official:profile'
         return reverse(viewname)
     
+    @property
+    def list_url(self):
+        return self.profile
+
     def save(self, *args, **kwargs):
         try:
             self.picture = compress(self.picture)
@@ -102,10 +109,18 @@ class Document(models.Model):
     image = models.ImageField(upload_to='registration_documents', null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='documents')
     reg = models.ForeignKey(RegistrationDocument, on_delete=models.CASCADE, related_name='documents')
-    
+
+    @property
+    def url(self):
+        file = os.path.join(settings.MEDIA_ROOT, self.image.name)
+        if self.image and os.path.isfile(file):
+            return self.image.url
+
+        return static('imgs/no_image.png')
+
     def save(self, *args, **kwargs):
         try:
-            self.picture = compress(self.image)
+            self.image = compress(self.image)
         except: pass
         
         super().save(*args, **kwargs)

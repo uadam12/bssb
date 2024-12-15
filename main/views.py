@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib import messages
 from board.models import Board
 from app import render, is_post
-from app.auth import login_required
+from app.auth import login_required, officials_only
 from app.context_processors import get_notifications
 from app.views import create_view, update_view, delete_view, data_view
 from .models import FAQ, Article, Notification, Contact
@@ -14,6 +14,7 @@ from .filters import FAQFilter, ArticleFilter, ContactFilter, NotificationFilter
 
 
 # Frequently Asked Questions(FAQs)
+@officials_only()
 def faqs(request):
     filter = FAQFilter(request.GET, queryset=FAQ.objects.all())
 
@@ -24,6 +25,7 @@ def faqs(request):
         add_url=reverse('main:create-faq'), title='FAQs'
     )
 
+@officials_only(admin_only=True)
 def create_faq(request):
     return create_view(
         request, form_class=FAQForm, 
@@ -38,6 +40,7 @@ def faq(request, id):
         request, 'main/faq', faq
     )
 
+@officials_only(admin_only=True)
 def update_faq(request, id):
     faq = get_object_or_404(FAQ, id=id)
     
@@ -47,6 +50,7 @@ def update_faq(request, id):
         save_instantly=True
     )
 
+@officials_only(admin_only=True)
 def delete_faq(request, id):
     faq = get_object_or_404(FAQ, id=id)
     
@@ -55,6 +59,7 @@ def delete_faq(request, id):
     )
     
 # Notifications
+@officials_only()
 def notifications(request):
     filter = NotificationFilter(request.GET, queryset=Notification.objects.all())
 
@@ -65,6 +70,7 @@ def notifications(request):
         add_url=reverse('main:create-notification'), title='Notifications'
     )
 
+@officials_only(admin_only=True)
 def create_notification(request):
     return create_view(
         request, form_class=NotificationForm, 
@@ -72,6 +78,7 @@ def create_notification(request):
         form_header='Add notification'
     )
 
+@officials_only(admin_only=True)
 def update_notification(request, id):
     notification = get_object_or_404(Notification, id=id)
     
@@ -81,6 +88,7 @@ def update_notification(request, id):
         save_instantly=True
     )
 
+@officials_only(admin_only=True)
 def delete_notification(request, id):
     notification = get_object_or_404(Notification, id=id)
     
@@ -89,20 +97,28 @@ def delete_notification(request, id):
     )
 
 def index(request):
-    board = Board()
-    faqs = FAQ.objects.all()
-    return render(request, 'main/index', board=board, faqs=faqs)
+    return render(
+        request, 'main/index', 
+        board=Board.load(),
+        faqs=FAQ.objects.all(),
+        title='Welcome to Borno State Scholarship Board'
+    )
 
 def news(request):
     articles = Article.objects.all()
     pagenator = Paginator(articles, 10, 4)
-    page = request.GET.get('page', 1)
-    articles = pagenator.get_page(page)
+    articles = pagenator.get_page(request.GET.get('page', 1))
     
-    return render(request, 'main/news', articles=articles)
+    return render(
+        request, 'main/news', articles=articles, 
+        title='Borno State Scholarship Board Updates'
+    )
 
 def about(request):
-    return render(request, 'main/about', abouts=Board.load().abouts)
+    return render(
+        request, 'main/about', abouts=Board.load().abouts,
+        title='About Borno State Scholarship Board'
+    )
 
 @login_required
 def contact_us(request):
@@ -132,6 +148,7 @@ def all_notifications(request):
         data = get_notifications(request.user)
     )
 
+@officials_only(admin_only=True)
 def reply(request, contact_id):
     contact = get_object_or_404(Contact, id=contact_id)
 
@@ -142,6 +159,7 @@ def reply(request, contact_id):
         form_header=f"Reply on: {contact.subject}"
     )
 
+@officials_only(admin_only=True)
 def contacts(request):
     filter = ContactFilter(request.GET, queryset=Contact.objects.all())
 
@@ -154,6 +172,7 @@ def contacts(request):
 
 
 # Articles
+@officials_only(admin_only=True)
 def articles(request):
     filter = ArticleFilter(request.GET, queryset=Article.objects.all())
 
@@ -166,6 +185,7 @@ def articles(request):
         table_headers=['S/N', 'Headline', 'Published on', 'Updated on', 'Actions']
     )
     
+@officials_only(admin_only=True)
 def article(request, id):
     article = get_object_or_404(Article, id=id)
     return render(
@@ -174,6 +194,7 @@ def article(request, id):
         article = article
     )
 
+@officials_only(admin_only=True)
 def create_article(request):
     return create_view(
         request, form_class=ArticleForm, 
@@ -181,6 +202,7 @@ def create_article(request):
         form_header='Create Article'
     )
 
+@officials_only(admin_only=True)
 def update_article(request, id):
     article = get_object_or_404(Article, id=id)
 
@@ -190,6 +212,7 @@ def update_article(request, id):
         form_header='Update Article'
     )
     
+@officials_only(admin_only=True)
 def delete_article(request, id):
     article = get_object_or_404(Article, id=id)
     return delete_view(request, model=article, header='Delete Article')

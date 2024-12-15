@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post" class="card mt-5 mx-auto" style="max-width: 500px;">
+<form method="post" class="card mt-5 mx-auto" style="max-width: 600px;">
     {% csrf_token %}
     {% load crispy_forms_tags %}
 
@@ -12,23 +12,24 @@
     <div class="card-body">
         {% crispy form %}
 
-        <div class="text-end">
-            <a class="text-decoration-none" href="{% url 'user:forgot-password' %}">
-                Forgot your password?
+        <div class="text-end me-3">
+            Forgot your password? 
+            <a class="text-decoration-none" href="{% url 'auth:forgot-password' %}">
+                Recover it
             </a>
         </div>
     </div>
 
     <div class="card-footer">
         <div class="text-end">
-            <a href="{% url 'user:register' %}" class="btn btn-success">
+            <a href="{% url 'auth:signup' %}" class="btn btn-success">
                 <i class="bi bi-person-plus"></i>
-                Create an account
+                Signup
             </a>
 
             <button type="submit" class="btn btn-primary">
                 <i class="bi bi-box-arrow-in-right"></i>
-                Login
+                Signin
             </button>
         </div>
     </div>

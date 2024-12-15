@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from app import render
 from app.views import update_view, delete_view, create_view, data_view
-from app.auth import officials_only
+from app.auth import officials_only, login_required
 from .filters import (
     CourseFilter, LevelFilter, InstitutionFilter, 
     FieldOfStudyFilter, ProgramFilter, InstitutionTypeFilter
@@ -28,6 +28,7 @@ def institution_types(request):
         data=filter.qs, add_url=reverse('academic:create-institution-type')
     )
 
+@login_required
 def institution_type(request):
     id = request.GET.get('institution_type')
     return render(
@@ -64,10 +65,13 @@ def delete_institution_type(request, id):
 def institutions(request):
     filter = InstitutionFilter(request.GET, queryset=Institution.objects.all())
     return data_view(
-        request, title='Institutions',
+        request=request, 
+        title='Institutions',
+        filter_form=filter.form,
         data_template="academic/institutions.html",
-        table_headers=['S/N', 'Name', 'Type', 'Action'], filter_form=filter.form,
-        data=filter.qs.prefetch_related('institution_type'), add_url=reverse('academic:create-institution')
+        add_url=reverse('academic:create-institution'),
+        table_headers=['S/N', 'Name', 'Type', 'Action'],
+        data=filter.qs.prefetch_related('institution_type'), 
     )
 
 @officials_only(admin_only=True)
@@ -111,12 +115,15 @@ def programs(request):
         data=filter.qs, add_url=reverse('academic:create-program')
     )
 
+@login_required
 def program(request):
     id = request.GET.get('program')
+    program = get_object_or_404(Program, pk=id)
 
     return render(
         request, 'parts/field-of-study', 
         levels=Level.objects.filter(program=id), 
+        level_display_name = program.level_display_name,
         field_of_studies=FieldOfStudy.objects.filter(program=id)
     )
 
@@ -156,6 +163,7 @@ def field_of_studies(request):
         add_url=reverse('academic:create-field-of-study')
     )
 
+@login_required
 def field_of_study(request):
     id = request.GET.get('field_of_study')
 

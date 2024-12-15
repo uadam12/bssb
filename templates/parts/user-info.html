@@ -19,9 +19,7 @@
     </div>
 
     <div class="text-center">
-        <h3 class="card-title">
-            {{ user.first_name }} {{ user.last_name }}
-        </h3>
+        <h3 class="card-title">{{ user }}</h3>
 
         <p>
             {{ user.personal_info.gender }} - {{ user.personal_info.date_of_birth }}
@@ -79,5 +77,13 @@
             </div>
         </li>
         {% endwith %}
+
+        <li class="list-group-item">
+            <div class="d-grid">
+                <a href="{% url 'auth:change-password' %}" class="btn btn-danger">
+                    <i class="bi bi-lock"></i> Change password
+                </a>
+            </div>
+        </li>
     </ul>
 </div>

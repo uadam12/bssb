@@ -5,7 +5,7 @@ app_name = 'applicant'
 
 urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('profile/', views.profile, name='profile'),
+    path('profile-info/', views.profile, name='profile'),
     path('personal-info/', views.personal_information, name='save-personal-info'),
     path('academic-info/', views.academic_information, name='save-academic-info'),
     path('bank-info/', views.account_details, name='save-bank-info'),

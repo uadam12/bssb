@@ -5,6 +5,7 @@ app_name = 'official'
 
 urlpatterns = [
     path('', views.officials, name='index'),
+    path('profile/', views.profile, name='profile'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('create/', views.create_official, name='create'),
     path('<int:id>/delete', views.delete_official, name='delete'),

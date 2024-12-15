@@ -7,21 +7,20 @@
         <h3 class="card-title text-success">Register a new account</h3>
     </div>
 
-
     <div class="card-body">
         {% crispy form %}
     </div>
 
     <div class="card-footer">
         <div class="text-end">
-            <a href="{% url 'user:login' %}" class="btn btn-success">
+            <a href="{% url 'auth:signin' %}" class="btn btn-success">
                 <i class="bi bi-box-arrow-in-right"></i>
-                Login Instead
+                Signin
             </a>
 
             <button type="submit" class="btn btn-primary">
                 <i class="bi bi-person-plus"></i>
-                Create account
+                Signup
             </button>
         </div>
     </div>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %} {% if articles %}
-<h2 class='text-center text-primary mb-4'>
+<h2 class='text-center text-success mb-4'>
     Borno State Scholarship Board Updates
 </h2>
 
@@ -8,18 +8,18 @@
 {% for article in articles %}
 <div class="col">
     <div class="card my-3">
-        <img src="{{article.headline_image.url}}" alt="" class="card-top-image">
+        <img src="{{ article.image }}" alt="" class="card-top-image">
         <div class="card-body">
-            <h3 class="text-primary">
+            <h3 class="text-success">
                 {{ article.headline }}
             </h3>
     
             <p>
-                {{ article.content|truncatewords:20 }}
+                {{ article.content.splitlines|first }}
             </p>
     
             <div class="text-end">
-                <a href="./{{ article.id }}" class="btn btn-primary">
+                <a href="{{ article.url }}" class="btn btn-primary">
                     Read full
                 </a>
             </div>

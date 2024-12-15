@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 import environ
+import pymysql
 from pathlib import Path
 from django.contrib.messages import constants as messages
+
+pymysql.install_as_MySQLdb()
 
 env = environ.Env()
 environ.Env.read_env()
@@ -46,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters', 'crispy_forms', 'crispy_bootstrap5',
     'board', 'payment', 'users', 'main', 'support',
-    'academic', 'scholarship', 'applicant', #'auth',
+    'academic', 'scholarship', 'applicant', 'auths',
 ]
 
 MIDDLEWARE = [
@@ -176,7 +179,7 @@ EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = 587
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 CSRF_COOKIE_SECURE = True

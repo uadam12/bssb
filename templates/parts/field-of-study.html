@@ -1,11 +1,11 @@
 <div class="form-group col-md-6 mb-0">
     <div id="div_id_current_level" class="mb-3">
         <label for="id_current_level" class="form-label requiredField">
-            Current level<span class="asteriskField">*</span>
+            {{ level_display_name|default:'Current level'}}<span class="asteriskField">*</span>
         </label>
 
         <select name="current_level" class="select form-select" required="" id="id_current_level">
-            <option selected disabled>Select your current level</option>
+            <option selected disabled>Select your {{ level_display_name|default:'Current level'|lower }}</option>
 
             {% for level in levels %}
             <option value="{{ level.pk }}">{{ level }}</option>

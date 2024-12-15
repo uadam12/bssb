@@ -37,11 +37,11 @@
 
             <!-- Sidebar Navigation Ends -->
             <div class="sidebar-footer">
-                <form action="{% url 'user:logout' %}" method="post" class="d-grid p-3">
+                <form action="{% url 'auth:signout' %}" method="post" class="d-grid p-3">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">
                         <i class="bi bi-box-arrow-left"></i>
-                        Logout
+                        Signout
                     </button>
                 </form>
             </div>

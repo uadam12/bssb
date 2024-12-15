@@ -17,11 +17,14 @@ def applications(request):
         title='Scholarship Applications',
         scholarships = scholarships
     )
-    
+
 @officials_only()
 def scholarship_applications(request, id):
     scholarship = get_object_or_404(Scholarship, id=id)
-    applications = scholarship.applications.all()
+    applications = Application.objects.filter(
+        scholarship=scholarship, 
+        status__in=['pending', 'approved', 'rejected']
+    )
     filter = ApplicationFilter(request.GET, queryset=applications)
 
     return data_view(
@@ -33,7 +36,7 @@ def scholarship_applications(request, id):
     )
 
 
-@officials_only()
+@officials_only(main_admin_only=True)
 def scholarship_disbursements(request, id):
     scholarship = get_object_or_404(Scholarship, id=id)
     filter = ApplicationFilter(
@@ -49,6 +52,7 @@ def scholarship_disbursements(request, id):
         filter_form=filter.form
     )
 
+@officials_only(admin_only=True)
 def approve_application(request, id):
     if not is_post(request) or request.user.access_code < 3:
         return HttpResponse('Invalid request')
@@ -61,6 +65,7 @@ def approve_application(request, id):
 
     return render(request, 'parts/application-status', application=application)
 
+@officials_only(admin_only=True)
 def reject_application(request, id):
     if not is_post(request) or request.user.access_code < 3:
         return HttpResponse('Invalid request')

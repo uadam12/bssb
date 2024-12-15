@@ -1,9 +1,9 @@
 from django.shortcuts import  get_object_or_404, redirect
+from django.utils import timezone
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib import messages
 from django.http import HttpResponse
-from django.db.models import Q
 from applicant.models import Referee
 from users.forms import ProfilePictureForm
 from app import is_post, get_or_none, render, render_form
@@ -113,7 +113,6 @@ def account_details(request):
             bvn = request.user.personal_info.bvn
             bank_code = form.cleaned_data['bank']
             account_number = form.cleaned_data['account_number']
-            
             account_details = remita.get_account_details(bvn, bank_code, account_number)
 
             if account_details.get('valid'):
@@ -199,26 +198,21 @@ def referees(request):
 
     return render_form(request, form)
 
-@applicant_only
+@complete_profile_required
 def scholarships(request):
     field_of_study = request.user.academic_info.field_of_study
     scholarships = Scholarship.objects.filter(
-        field_of_studies=field_of_study
-    ).exclude(application__applicant=request.user)
+        field_of_studies=field_of_study, 
+        application_commence__lt=timezone.now(),
+        application_deadline__gt=timezone.now(),
+    )
+    scholarships = scholarships.exclude(application__applicant=request.user).distinct()
     
     return render(
         request, 'applicants/scholarships', 
         scholarships = scholarships,
         title="Open Scholarships"
     )
-    
-def get_application_documents(application:Application) -> list[Document]:
-    app_documents = ApplicationDocument.objects.filter(scholarship=application.scholarship).all()
-    for app_document in app_documents:
-        Document.objects.get_or_create(app_document=app_document, application=application)
-    
-    return Document.objects.filter(application=application)
-
 
 @complete_profile_required
 def apply(request, id):
@@ -227,7 +221,12 @@ def apply(request, id):
 
     if not (application and application.application_fee_payment):
         return redirect('payment:application-fee', id=id)
-    app_docs = get_application_documents(application)
+    
+    if application.status != 'incomplete':
+        messages.info(application, 'Application completed already.')
+        return redirect('applicant:dashboard')
+    
+    app_docs = application.get_documents
     form = ApplictionDocumentForm(queryset=app_docs)
     form.is_valid()
 
@@ -244,7 +243,6 @@ def apply(request, id):
 
     return render(
         request, 'applicants/apply', 
-        scholarship = scholarship,
-        forms = form,
-        title=f"Application for {scholarship}"
+        title=f"Application for {scholarship}",
+        scholarship = scholarship, forms = form,
     )

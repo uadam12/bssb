@@ -4,6 +4,7 @@ from django.urls import reverse, reverse_lazy
 # Create your models here.
 class Program(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    level_display_name = models.CharField(max_length=100, null=True, blank=True)
     list_url = reverse_lazy('academic:programs')
 
     @property

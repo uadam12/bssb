@@ -11,23 +11,27 @@ from .models import User
 
 
 @officials_only()
-def dashboard(request):
-    officials = User.objects.officials()
-    applicants = User.objects.applicants()
-    
+def profile(request):
     return render(
-        request, 'officials/dashboard', 
-        title='BSSB Official Dashboard',
-        total_blocked_users = officials.count(),
-        total_open_scholarships = Scholarship.objects.count(),
-        total_scholarships = Scholarship.objects.count(),
-        total_applicants = applicants.count(),
-        total_users = applicants.count() + officials.count(),
-        total_admins = applicants.count(),
-        total_guests = officials.count(),
+        request, 'officials/profile', 
+        title='Official Profile',
     )
 
-@officials_only(main_admin_only=not True)
+@officials_only()
+def dashboard(request):
+    return render(
+        request, 'officials/dashboard', 
+        title='Official Dashboard',
+        total_blocked_users = User.objects.blocks().count(),
+        total_open_scholarships = Scholarship.objects.count(),
+        total_scholarships = Scholarship.objects.count(),
+        total_applicants = User.objects.applicants().count(),
+        total_users = User.objects.non_main_admins().count(),
+        total_admins = User.objects.admins().count(),
+        total_guests = User.objects.guests().count(),
+    )
+
+@officials_only(main_admin_only=True)
 def officials(request):
     filter = OfficalFilter(
         request.GET, queryset=User.objects.filter(
@@ -42,7 +46,7 @@ def officials(request):
         table_headers=['S/N', 'Official Name', 'Email Address', 'Type', 'Actions']
     )
 
-@officials_only(main_admin_only=not True)
+@officials_only(main_admin_only=True)
 def create_official(request):
     return create_view(
         request, form_class=OfficialForm,
@@ -50,7 +54,7 @@ def create_official(request):
         form_header='Create Admin'
     )
 
-@officials_only()
+@officials_only(main_admin_only=True)
 def delete_official(request, id):
     admin = get_object_or_404(User, id=id, access_code__in=[2,3])
 
@@ -58,7 +62,7 @@ def delete_official(request, id):
         request, model=admin, header='Delete Official'
     )
 
-@officials_only()
+@officials_only(main_admin_only=True)
 def update_official(request, id):
     admin = get_object_or_404(User, id=id)
     
@@ -68,7 +72,7 @@ def update_official(request, id):
         form_header='Update Official',
     )
 
-@officials_only()
+@officials_only(admin_only=True)
 def applicants(request):
     filter = ApplicantFilter(request.GET, queryset=User.objects.filter(access_code__in=[0,1]))
 
@@ -80,25 +84,26 @@ def applicants(request):
         title='Applicants',
     )
 
-
+@officials_only(admin_only=True)
 def block_applicant(request, applicant_id):
-    if not is_post(request) or request.user.access_code < 3:
+    if not is_post(request):
         return HttpResponse('Invalid request')
     
-    user = get_or_none(User, id=applicant_id)
+    user:User = get_or_none(User, id=applicant_id)
     if user is not None:
-        user.access_code = 0
+        user.is_blocked = True
         user.save()
 
     return render(request, 'parts/applicant-access', applicant=user)
 
+@officials_only(admin_only=True)
 def unblock_applicant(request, applicant_id):
     if not is_post(request) or request.user.access_code < 3:
         return HttpResponse('Invalid request')
     
-    user = get_or_none(User, id=applicant_id)
+    user:User = get_or_none(User, id=applicant_id)
     if user is not None:
-        user.access_code = 1
+        user.is_blocked = False
         user.save()
 
     return render(request, 'parts/applicant-access', applicant=user)

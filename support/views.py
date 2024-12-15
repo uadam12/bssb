@@ -69,15 +69,14 @@ def ticket_resolve(request, id):
     user:User = request.user
     
     if user.pk != ticket.user.pk:
-        messages.info(request, 'Only admin or the owner can view ticket.')
+        messages.info(request, 'Only ticket owner can mark it as resolved.')
     elif not ticket.is_resolved:
         ticket.is_resolved = True
         ticket.save()
-        message = f"{ticket} of {user} is resolved"
+        message = f"{ticket} resolved"
+        messages.info(request, message)
         notify(message, owner=user, user=user)
-        
-    messages.info(request, f"{ticket} resolved")
-    
+
     return render(request, 'parts/ticket-status', ticket=ticket)
     
 @login_required
@@ -85,10 +84,9 @@ def ticket(request, id:int):
     ticket = get_object_or_404(Ticket, id=id)
     user:User = request.user
 
-    if user.access_code < 3 and user.pk != ticket.user.pk:
+    if user.pk != ticket.user.pk and user.access_code < 3:
         messages.info(request, 'Only admin or the owner can view ticket.')
-
-    form = MessageForm()
+        return redirect(user.dashboard)
     
     if is_post(request):
         form = MessageForm(request.POST)
@@ -99,7 +97,7 @@ def ticket(request, id:int):
             message.ticket = ticket
             message.save()
             
-            message = f"New message from {user} on {ticket}"
+            message = f"New message in {ticket}"
             notify(message, owner=ticket.user, user=user)
 
             if is_htmx(request):
@@ -109,7 +107,8 @@ def ticket(request, id:int):
                 return response
 
             messages.success(request, 'Message sent')
-    
+    else: form = MessageForm()
+
     ticket_messages = Message.objects.filter(ticket=ticket).all()
 
     if is_htmx(request):

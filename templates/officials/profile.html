@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center text-success">Profile Details</h2>
+<div class="card my-5 mx-auto" style="max-width: 800px;">
+    <div class="card-header">
+        <h3 class="card-title text-success">{{ user }}</h3>
+    </div>
+
+    <div class="card-body">
+        <img id="profile-img" class="img-fluid rounded d-block mx-auto" src="{{ user.avatar }}" />
+    </div>
+
+    <div class="card-footer">
+        <div class="row g-4">
+            <div class="col-md">
+                <div class="d-grid">
+                    <a href="{% url 'user:update-name' %}" class="btn btn-primary">
+                        <i class="bi bi-person"></i> Update Name
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="d-grid">
+                    <a href="{% url 'auth:change-password' %}" class="btn btn-primary">
+                        <i class="bi bi-lock"></i> Change Password
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="d-grid">
+                    <a href="{% url 'user:change-picture' %}" class="btn btn-primary">
+                        <i class="bi bi-camera"></i> Change Picture
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,6 +1,5 @@
 import os
 from django.conf import settings
-from django.templatetags.static import static
 from django.contrib.staticfiles import finders
 from .helpers import PDFDoc, Header, Row, Text, Grid, Signature
 

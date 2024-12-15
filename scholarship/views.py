@@ -130,7 +130,7 @@ def field_of_studies(request, id):
         return redirect(scholarship.url)
     
     return render(
-        request, 'scholarship/field-of-studies', scholarship=scholarship,
+        request, 'scholarship/field-of-studies', 
+        programs=programs, scholarship=scholarship,
         title=f"Manage field of studies of {scholarship}",
-        programs=programs
     )
