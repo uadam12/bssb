@@ -100,7 +100,7 @@ class AccountBankForm(forms.ModelForm):
     
     class Meta:
         model = AccountBank
-        exclude = ('user', 'account_name')
+        exclude = ('user', )
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -112,7 +112,12 @@ class AccountBankForm(forms.ModelForm):
         self.helper.attrs['hx-post'] = reverse('applicant:save-bank-info')
         self.helper.attrs['hx-target'] = 'this'
         self.helper.layout = Layout(
-            'bank', 'account_number',
+            'bank',
+            Row(
+                Column('account_name', css_class='form-group col-md-6 mb-0'),
+                Column('account_number', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
             Div(
                 Submit('save', 'Save Bank Account'),
                 css_class='text-end'

@@ -11,7 +11,6 @@ from crispy_forms.helper import FormHelper
 from app.validators import validate_phone_number
 from board.models import LGA
 from applicant.models import PersonalInformation
-from payment.remita import remita
 from users.models import User
 from .validators import validate_nin, validate_bvn
 

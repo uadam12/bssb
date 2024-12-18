@@ -9,8 +9,7 @@ from users.forms import ProfilePictureForm
 from app import is_post, get_or_none, render, render_form
 from app.views import create_view, update_view, delete_view
 from app.auth import applicant_only, complete_profile_required
-from scholarship.models import Scholarship, Application, ApplicationDocument, Document
-from payment.remita import remita
+from scholarship.models import Scholarship, Application
 from .forms import (
     PersonalInformationForm, PersonalInformation,
     AcademicInformationForm, AcademicInformation,
@@ -110,21 +109,11 @@ def account_details(request):
         form = AccountBankForm(request.POST, instance=account_bank)
 
         if form.is_valid():
-            bvn = request.user.personal_info.bvn
-            bank_code = form.cleaned_data['bank']
-            account_number = form.cleaned_data['account_number']
-            account_details = remita.get_account_details(bvn, bank_code, account_number)
-
-            if account_details.get('valid'):
-                account_name = account_details.get('nameOnAccount')
-                account_bank:AccountBank = form.save(False)
-                account_bank.account_name = account_name
-                account_bank.user = request.user
-                account_bank.save()
-                messages.success(request, "Account bank details Save successfully.")
-                messages.info(request, f"Account name: {account_name}")
-            else: messages.error(request, account_details.get('message'))
-
+            account_bank:AccountBank = form.save(False)
+            account_bank.user = request.user
+            account_bank.save()
+            messages.success(request, "Account bank details Save successfully.")
+            
     return render_form(request, form)
 
 @applicant_only
