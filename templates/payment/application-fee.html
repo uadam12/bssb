@@ -1,40 +1,78 @@
 {% extends 'base.html' %} {% load static %}
 
 {% block content %}
-<div class="card mx-auto" style="max-inline-size: 600px;">
+<div class="card mx-auto" style="max-width: 800px;">
     <div class="card-header">
-        <h3 class="card-title">{{ scholarship }} application</h3>
+        <h3 class="card-title text-success">{{ scholarship|capfirst }} application</h3>
     </div>
 
     <div class="card-body">
-        <p>{{ scholarship.description }}</p>
+        <div class="container">
+        {% for description in scholarship.description.splitlines %}
+            <p>{{ description }}</p>
+        {% endfor %}
+        </div>
 
-        <h5>You need to past the following criteria:</h5>
-        <ul>
-            {% for criterion in scholarship.criteria %}
-            <li>{{ criterion }}</li>
-            {% endfor %}
-        </ul>
+        {% if scholarship.eligibility_criteria %}
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center text-success mb-4">Eligibility Criteria</h2>
 
-        <h5>You will be ask to upload the following documents:</h5>
-        <ul>
-            {% for requirement in scholarship.requirements.all %}
-            <li>{{ requirement }}</li>
-            {% endfor %}
-        </ul>
+                <ul class="list-group list-group-flush">
+                    {% for criterion in scholarship.eligibility_criteria.splitlines %}
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        {{ criterion }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+        {% endif %}
 
-        <strong>
-            Finally, you must also pay non refundable of <i class="amount">{{ scholarship.application_fee }}</i> as application FEE.
-        </strong>
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center text-success mb-4">Required documents</h2>
+
+                <ul class="list-group list-group-flush">
+                    {% for app_document in scholarship.app_documents.all %}
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        {{ app_document }}
+                    </li>
+                    {% endfor %}
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        Finally, you must also pay non refundable of 
+                        <i class="amount">{{ scholarship.application_fee }}</i> 
+                        as application FEE.
+                    </li>
+                </ul>
+            </div>
+        </section>
     </div>
 
     <div class="card-footer">
-        <form method="post" class="text-center">
-            {% csrf_token %}
-            <div class="d-grid">
-                <button class="btn btn-success">Pay Now</button>
+        <div class="row g-4 justify-content-betweewn align-items-center">
+            <div class="col-sm">
+                <div class="d-grid">
+                    <a href="{% url 'payment:verify-app-fee-payment' id=application.pk %}?rrr={{payment.rrr}}"
+                        class="btn btn-primary">
+                        I have paid
+                    </a>
+                </div>
             </div>
-        </form>
+
+            <div class="col-sm">
+                <form class="d-grid col-sm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">
+                        Pay Now
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

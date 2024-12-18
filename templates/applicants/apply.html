@@ -16,7 +16,7 @@
 
 <h3 class="text-decoration-underline">Academic Information</h3>
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-3">
         <h5>Instutution</h5>
         <p>{{ user.academic_info.institution }}</p>
     </div>
@@ -26,7 +26,12 @@
         <p>{{ user.academic_info.program }}</p>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <h5>Field of study</h5>
+        <p>{{ user.academic_info.field_of_study }}</p>
+    </div>
+
+    <div class="col-md-3">
         <h5>Course of study</h5>
         <p>{{ user.academic_info.course_of_study }}</p>
     </div>

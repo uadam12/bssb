@@ -48,12 +48,13 @@ def generate_application_form(application):
         ('Local Government Area', str(info.local_government_area)),
         ('Residential Address', info.residential_address)
     ))
-    
+
     # Academic Information
     doc.add_header("Academic Information")
     doc.add(Row(
         ('Institution', str(application.instituion)),
         ('Program', str(application.program)),
+        ('Field Of Study', str(application.field_of_study)),
         ('Course Of Study', str(application.course_of_study))
     ))
     doc.add(Row(

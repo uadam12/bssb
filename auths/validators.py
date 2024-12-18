@@ -1,29 +1,37 @@
 import re
 from django.core.exceptions import ValidationError
 from applicant.models import PersonalInformation
-from payment.remita import remita
+from app.validators import validate_phone_number as vpn
 
-data = {}
 
+def validate_phone(phone_number):
+    phone_number = vpn(phone_number)
+    
+    if PersonalInformation.objects.filter(phone_number=phone_number).exists():
+        raise ValidationError(f"Applicant with this phone number already exists.")
+    
+    return phone_number
 
 def validate_nin(nin):
-        nin_format = r'\d{11}'
-        nin_match = re.match(nin_format, nin)
+    nin_format = r'\d{11}'
+    nin_match = re.match(nin_format, nin)
         
-        if not nin_match:
-            raise ValidationError("Invalid NIN")
+    if not nin_match:
+        raise ValidationError("Invalid National Identification Number(NIN)")
 
-        info = PersonalInformation.objects.filter(nin=nin)
-        if info.exists():
-            raise ValidationError(f"Applicant with this National Identification Number(NIN: {nin}) already exists.")
+    if PersonalInformation.objects.filter(nin=nin).exists():
+        raise ValidationError(f"Applicant with this National Identification Number(NIN) already exists.")
+        
+    return nin
 
-        if nin not in data:
-            data[nin] = remita.get_nin_data(nin)
+def validate_bvn(bvn):
+    bvn_format = r'\d{11}'
+    bvn_match = re.match(bvn_format, bvn)
         
-        nin_data = data.get(nin)
-        
-        if nin_data.get('stateOfOriginCode') != 'BO':
-            raise ValidationError('This program is only applicable to Borno state indigen.')
+    if not bvn_match:
+        raise ValidationError("Invalid Bank Verification Number(BVN).")
 
+    if PersonalInformation.objects.filter(bvn=bvn).exists():
+        raise ValidationError(f"Applicant with this Bank Verification Number(BVN) already exists.")
         
-        return nin
+    return bvn

@@ -8,7 +8,7 @@ def generate_token(email:str) -> str:
 
 def verify_token(token) -> str | None:
     try:
-        email = serializer.loads(token)
+        email = serializer.loads(token, max_age=600)
         return email
     except Exception:
         return None

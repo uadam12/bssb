@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.conf import settings
-from app.token import generate_token
+from auths.token import generate_token
 
 def get_full_link(request, user, view) -> str:
     token = generate_token(user.email)

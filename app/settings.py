@@ -88,14 +88,6 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -106,6 +98,13 @@ DATABASES = {
         'PORT': env('DATABASE_PORT'),
     }
 }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -179,7 +178,12 @@ EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+BASE_URL = env('BASE_URL')
+SERVICE_TYPE_ID = env('SERVICE_TYPE_ID')
+MERCHANT_ID = env('MERCHANT_ID')
+API_KEY = env('API_KEY')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 CSRF_COOKIE_SECURE = True

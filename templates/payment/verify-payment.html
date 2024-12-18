@@ -1,17 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form class="card">
-        {% csrf_token %}
-
+    <form class="card my-5 mx-auto" style="max-width: 600px;">
         <div class="card-header">
             <h3 class="card-title">Verify Your Payment</h3>
         </div>
 
         <div class="card-body">
             <div class="form-group">
-                <label for="reference"></label>
-                <input type="text" name="reference" id="reference" class="form-control" placeholder="Enter RRR to verify your payment">
+                <label for="rrr"></label>
+                <input type="text" name="rrr" id="rrr" class="form-control" placeholder="Enter RRR to verify your payment">
             </div>
         </div>
 

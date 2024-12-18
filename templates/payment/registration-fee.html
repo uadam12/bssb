@@ -10,7 +10,7 @@
         <p>
             Welcome to <strong class="text-underlined">Borno State Scholarship Board</strong>! <br>
             To complete your registration and have access to all available scholarships for you,
-            please pay the one-time registration fee of <b class="amount">{{ amount|floatformat:2 }}</b>
+            please pay the one-time registration fee of <b class="amount">{{ payment.amount|floatformat:2 }}</b>
         </p>
 
         <p>
@@ -20,12 +20,24 @@
     </div>
 
     <div class="card-footer">
-        <form class="d-grid" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-success">
-                Pay Now
-            </button>
-        </form>
+        <div class="row g-4 justify-content-betweewn align-items-center">
+            <div class="col-sm">
+                <div class="d-grid">
+                    <a href="{% url 'payment:verify-reg-fee-payment' %}?rrr={{payment.rrr}}" class="btn btn-primary">
+                        I have paid
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <form class="d-grid col-sm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">
+                        Pay Now
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

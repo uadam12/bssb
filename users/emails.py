@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.conf import settings
-from app.token import generate_token
+from auths.token import generate_token
 
 
 def bssb_send_email(subject, message, recipient_list) -> bool:
@@ -14,7 +14,7 @@ def bssb_send_email(subject, message, recipient_list) -> bool:
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=recipient_list,
         html_message=message,
-        #fail_silently=True
+        fail_silently=True
     )
 
 

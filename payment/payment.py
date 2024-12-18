@@ -1,54 +1,51 @@
-import requests
+import requests, hashlib, random, json
+from django.conf import settings
+from users.models import User
 
-class PaymentAPI:
+
+class Remita:
     def __init__(self):
-        self.key = "sk_test_ad19c74552082f0d0e963480de5f0cef5cd3f5eb"
+        self.base_url = settings.BASE_URL
+        self.serviceTypeId = settings.SERVICE_TYPE_ID
+        self.merchantId = settings.MERCHANT_ID
+        self.apiKey = settings.API_KEY
 
-    def get_headers(self, json_type=False, headers: dict = {}):
-        headers.update({
-            "Authorization": f"Bearer {self.key}",
-            **headers
-        })
+    def sha512(self, inputString):
+        hashed_input = hashlib.sha512(inputString.encode('utf-8'))
+        return hashed_input.hexdigest()
 
-        if json_type: headers.update({
-            "Content-Type": "application/json"
-        })
-
-        return headers
-
-    def url(self, amount, user, redirect_url):
-        url = 'https://api.paystack.co/transaction/initialize'
-        headers = self.get_headers(
-            json_type=True
-        )
-        
-        body = {
-            'email': user.email,
-            'amount': amount * 100,
-            'callback_url': redirect_url
+    def init_payment(self, totalAmount, user:User, description:str=''):
+        orderId = str(random.random() * 1000000000)
+        apiHash = self.sha512(f"{self.merchantId}{self.serviceTypeId}{orderId}{totalAmount}{self.apiKey}")
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f"remitaConsumerKey={self.merchantId},remitaConsumerToken={apiHash}"
         }
-        
-        res = requests.post(
-            url = url,
-            headers = headers,
-            json = body
+        payload = {
+            'serviceTypeId': self.serviceTypeId,
+            'amount': str(totalAmount),
+            'orderId': orderId,
+            'payerName': str(user),
+            'payerEmail': user.email,
+            'payerPhone': user.personal_info.phone_number,
+            'description': description
+        }
+        response = requests.post(
+            f"{self.base_url}echannelsvc/merchant/api/paymentinit", 
+            headers=headers, json=payload
         )
-        data = res.json().get('data', {})
-        url = data.get('authorization_url', '')
-        return url
 
-    def verify(self, ref, amount):
-        url = f"https://api.paystack.co/transaction/verify/{ref}"
-        headers = self.get_headers()
-
-        res = requests.get(url, headers=headers).json()
-        data = res.get('data', {})
+        result = response.text
+        if result.startswith(('{', '[')):
+            return response.json()
         
-        if data.get('status') != 'success':
-            return False
-        
-        return int(data.get('amount', '0')) >= amount
+        a = result.find('(') + 1
+        b = result.rfind(')')
+        return json.loads(result[a:b])
 
-        
-payment = PaymentAPI()
+    def verify_payment(self, rrr):
+        apiHash = self.sha512(f"{rrr}{self.apiKey}{self.merchantId}")
+        response = requests.get(f"{self.base_url}echannelsvc/{self.merchantId}/{rrr}/{apiHash}/status.reg")
+        return response.json()
 
+remita = Remita()

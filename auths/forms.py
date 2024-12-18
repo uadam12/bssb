@@ -13,96 +13,49 @@ from board.models import LGA
 from applicant.models import PersonalInformation
 from payment.remita import remita
 from users.models import User
+from .validators import validate_nin, validate_bvn
 
 class RegisterForm(UserCreationForm):
     phone_number = forms.CharField(max_length=15, validators=[validate_phone_number])
-    nin = forms.CharField(label="National Identification Number", max_length=11, min_length=11, required=True)
-    bvn = forms.CharField(label="Bank Verification Number", max_length=11, min_length=11, required=True)
+    nin = forms.CharField(label="National Identification Number", required=True, validators=[validate_nin])
+    bvn = forms.CharField(label="Bank Verification Number", required=True, validators=[validate_bvn])
+    gender = forms.ChoiceField(choices=PersonalInformation.GENDER)
+    date_of_birth = forms.DateField(widget=forms.DateInput({'type': 'date', 'placeholder': 'Select your date of birth'}))
+    agreed = forms.BooleanField(
+        label='I am sure the information I provided is correct to best of my knowledge.', required=False
+    )
+    lga = forms.ModelChoiceField(
+        label='Local Government Area', 
+        queryset=LGA.objects.all(),
+        empty_label='Select your local government of origin'
+    )
     
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
     
-    def clean_nin(self):
-        nin = self.cleaned_data['nin']
-        nin_format = r'\d{11}'
-        nin_match = re.match(nin_format, nin)
+    def clean_agreed(self):
+        agreed = self.cleaned_data.get('agreed', False)
         
-        if not nin_match:
-            raise ValidationError("Invalid NIN")
-
-        info = PersonalInformation.objects.filter(nin=nin)
-        if info.exists():
-            raise ValidationError(f"Applicant with this National Identification Number(NIN: {nin}) already exists.")
+        if not agreed:
+            raise ValidationError(f"Please do confirm the information you are giving us is correct.")
         
-        nin_data = remita.get_nin_data(nin)
-        if nin_data.get('stateOfOriginCode') != 'BO':
-            raise ValidationError('This program is only applicable to Borno state indigen.')
-
-        self.cleaned_data['nin_data'] = nin_data            
-        return nin
-    
-    def clean_bvn(self):
-        bvn = self.cleaned_data['bvn']
-        bvn_format = r'\d{11}'
-        bvn_match = re.match(bvn_format, bvn)
-        
-        if not bvn_match:
-            raise ValidationError("Invalid BVN")
-
-        info = PersonalInformation.objects.filter(bvn=bvn)
-        if info.exists():
-            raise ValidationError(f"Applicant with this Bank Verification Number(BVN: {bvn}) already exists.")
-
-        bvn_data = remita.get_bvn_data(bvn)
-        if bvn_data.get('stateOfOriginCode') != 'BO':
-            raise ValidationError('This program is only applicable to Borno state indigen.')
-
-        self.cleaned_data['bvn_data'] = bvn_data
-        return bvn
-
-    
-    def clean_phone_number(self):
-        phone_number = self.cleaned_data['phone_number']
-        
-        info = PersonalInformation.objects.filter(phone_number=phone_number)
-        if info.exists():
-            raise ValidationError(f"Applicant with this Phone Number({phone_number}) already exists.")
-        
-        return phone_number
-
-    def clean(self):
-        data = super().clean()
-
-        nin_data = data.get('nin_data', None)
-        if not nin_data:
-            raise ValidationError('NIN Details not found.')
-
-        bvn_data = data.get('bvn_data', None)
-        if not bvn_data:
-            raise ValidationError('BVN Details not found.')
-
-        nin_dob, bvn_dob = nin_data.get('dateOfBirth', ''), bvn_data.get('dateOfBirth', '')
-        if nin_dob and bvn_dob and nin_dob > bvn_dob:
-            raise ValidationError('NIN and BVN date of birth mismatch.')
-
-        return data
+        return agreed
 
     def save(self, _=None):
         user = super().save(commit=False)
-        data:dict = self.cleaned_data['nin_data']
+        data:dict = self.cleaned_data
         user.is_active = False
-        user.first_name = data.get('firstName')
-        user.last_name = data.get('lastName')
-        lga = get_object_or_404(LGA, pk=data.get('lgaofOriginCode'))
-
+        user.first_name = data.get('first_name')
+        user.last_name = data.get('last_name')
+        
         info = PersonalInformation(
             phone_number = self.cleaned_data.get('phone_number'),
             gender = data.get('gender'), user = user,
-            date_of_birth = data.get('dateOfBirth'),
-            nin = self.cleaned_data['nin'], 
-            bvn = self.cleaned_data['bvn'], 
-            local_government_area = lga
+            date_of_birth = data.get('date_of_birth'),
+            nin = data.get('nin'), 
+            bvn = data.get('bvn'), 
+            local_government_area = data.get('lga')
         )
 
         user.save()
@@ -112,6 +65,16 @@ class RegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+        self.fields['first_name'].widget.attrs.update({
+            'placeholder': 'Enter your firstname.',
+            'required': 'required'
+        })
+        
+        self.fields['last_name'].widget.attrs.update({
+            'placeholder': 'Enter your lastname.',
+            'required': 'required'
+        })
         
         self.fields['nin'].widget.attrs.update({
             'placeholder': 'Enter your Nation Identification Number(NIN).',
@@ -142,15 +105,24 @@ class RegisterForm(UserCreationForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Row(
+                Column('first_name', css_class='form-group col-md-6 mb-0'),
+                Column('last_name', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row mb-2'
+            ),
+            Row(
                 Column('email', css_class='form-group col-md-6 mb-0'),
                 Column('phone_number', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row mb-2'
             ),
-            
             Row(
                 Column('nin', css_class='form-group col-md-6 mb-0'),
                 Column('bvn', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
+            ), 'lga',
+            Row(
+                Column('gender', css_class='form-group col-md-6 mb-0'),
+                Column('date_of_birth', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row mb-2'
             ),
             Row(
                 Column(
@@ -163,6 +135,7 @@ class RegisterForm(UserCreationForm):
                 ),
                 css_class='form-row'
             ),
+            'agreed'
         )
 
 class LoginForm(forms.Form):

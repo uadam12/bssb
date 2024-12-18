@@ -6,7 +6,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from crispy_forms.templatetags.crispy_forms_filters import as_crispy_field
 from app import render, is_post
-from app.token import verify_token
+from auths.token import verify_token
 from app.auth import logout_required, login_required, blocked_required, inactive_required
 from board.models import Board
 from users.models import User
