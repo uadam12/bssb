@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib import messages
 from django.http import HttpResponse
+from django.db.models import Q
 from applicant.models import Referee
 from users.forms import ProfilePictureForm
 from app import is_post, get_or_none, render, render_form
@@ -22,11 +23,14 @@ from .forms import (
 # Create your views here.
 @applicant_only
 def dashboard(request):
-    applications = Application.objects.filter(applicant = request.user) 
+    applications = Application.objects.filter(
+        Q(applicant=request.user) &
+        ~Q(status='incomplete')
+    )
     return render(
         request, 'applicants/dashboard', 
         applications = applications,
-        title = 'BSSB Dashboard', 
+        title = 'My Dashboard', 
     )
 
 @applicant_only
@@ -38,7 +42,7 @@ def change_profile_picture(request):
             return render(request, 'parts/profile-img')
 
     messages.error(request, 'Invalid request')
-    return HttpResponse(status=204)
+    return HttpResponse(status=400)
 
 @applicant_only
 def profile(request):
@@ -194,8 +198,10 @@ def scholarships(request):
         field_of_studies=field_of_study, 
         application_commence__lt=timezone.now(),
         application_deadline__gt=timezone.now(),
-    )
-    scholarships = scholarships.exclude(application__applicant=request.user).distinct()
+    ).exclude(
+        Q(application__applicant=request.user)
+        & ~Q(application__status='incomplete')
+    ).distinct()
     
     return render(
         request, 'applicants/scholarships', 

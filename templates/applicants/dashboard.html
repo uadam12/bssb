@@ -16,6 +16,7 @@
             <tr>
                 <th>S/N</th>
                 <th>Scholarship Name</th>
+                <th>Application ID</th>
                 <th>Status</th>
                 <th>View</th>
             </tr>
@@ -23,8 +24,27 @@
             {% for application in applications %}
             <tr>
                 <td>{{ forloop.counter }}</td>
+                <td>{{ application.scholarship }}</td>
                 <td>{{ application.application_id }}</td>
-                <td>{{ application.status }}</td>
+                <td>
+                    {% if application.status == 'approved' %}
+                    <span class="badge badge-fill bg-primary">
+                        Approved
+                    </span>
+                    {% elif application.status == 'paid' %}
+                    <span class="badge badge-fill bg-success">
+                        Paid
+                    </span>
+                    {% elif application.status == 'rejected' %}
+                    <span class="badge badge-fill bg-danger">
+                        Rejected
+                    </span>
+                    {% else %}
+                    <span class="badge badge-fill bg-secondary">
+                        {{ application.status }}
+                    </span>
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{% url 'scholarship:application' application_id=application.application_id %}" class="btn btn-primary">
                         <i class="bi bi-eye"></i>

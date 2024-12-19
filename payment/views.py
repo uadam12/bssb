@@ -48,7 +48,7 @@ def registration_fee(request):
             payment.save()
         else: messages.error(request, 'Something went wrong. Please refresh the page.')
 
-    elif user.registration_fee_payment.pk == payment.pk and payment.verified:
+    elif user.registration_fee_payment and user.registration_fee_payment.pk == payment.pk and payment.verified:
         messages.info(request, 'Registration FEE paid already.')
         return redirect(user.profile)
 
@@ -155,4 +155,4 @@ def verify_application_fee(request, id):
                 messages.info(request, 'Please review your profile details and then upload the required documents.')
                 return redirect('applicant:apply', id=scholarship.id)
             messages.error(request, 'Payment details not found')
-    return render(request, 'payment/verify-payment', title='BSSB Verify Payment')
+    return render(request, 'payment/verify-payment', title='Verify Application FEE Payment')

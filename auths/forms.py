@@ -21,7 +21,7 @@ class RegisterForm(UserCreationForm):
     gender = forms.ChoiceField(choices=PersonalInformation.GENDER)
     date_of_birth = forms.DateField(widget=forms.DateInput({'type': 'date', 'placeholder': 'Select your date of birth'}))
     agreed = forms.BooleanField(
-        label='I am sure the information I provided is correct to best of my knowledge.', required=False
+        label='I hereby declare that the information provided above is to the best of my knowledge and belief accurate in every details.', required=False
     )
     lga = forms.ModelChoiceField(
         label='Local Government Area', 
@@ -37,7 +37,7 @@ class RegisterForm(UserCreationForm):
         agreed = self.cleaned_data.get('agreed', False)
         
         if not agreed:
-            raise ValidationError(f"Please do confirm the information you are giving us is correct.")
+            raise ValidationError(f"Please do confirm the information given above is accurate.")
         
         return agreed
 
@@ -45,15 +45,12 @@ class RegisterForm(UserCreationForm):
         user = super().save(commit=False)
         data:dict = self.cleaned_data
         user.is_active = False
-        user.first_name = data.get('first_name')
-        user.last_name = data.get('last_name')
         
         info = PersonalInformation(
             phone_number = self.cleaned_data.get('phone_number'),
+            nin = data.get('nin'), bvn = data.get('bvn'), 
             gender = data.get('gender'), user = user,
             date_of_birth = data.get('date_of_birth'),
-            nin = data.get('nin'), 
-            bvn = data.get('bvn'), 
             local_government_area = data.get('lga')
         )
 

@@ -7,10 +7,12 @@ from django.core.exceptions import ValidationError
 from app import compress
 from board.models import Bank
 from academic.models import Program, Institution, Level, Course, FieldOfStudy
-from applicant.models import SchoolAttended
 from payment.models import Payment
 from users.models import User
-
+from applicant.models import (
+    SchoolAttended, AcademicInformation, 
+    AccountBank, PersonalInformation, Referee
+)
 
 # Create your models here.
 class Scholarship(models.Model):
@@ -174,13 +176,13 @@ class Application(models.Model):
     @classmethod
     def get_or_create(cls, applicant:User, scholarship):
         try:
-            model:Application = cls.objects.filter(applicant=applicant, scholarship=scholarship).get()
+            model:cls = cls.objects.filter(applicant=applicant, scholarship=scholarship).get()
         except cls.DoesNotExist:
-            model = cls(applicant=applicant, scholarship=scholarship)
+            model:cls = cls(applicant=applicant, scholarship=scholarship)
             model.applicant = applicant
             model.scholarship = scholarship
 
-            academic = applicant.academic_info
+            academic:AcademicInformation = applicant.academic_info
             model.course_of_study = academic.course_of_study
             model.field_of_study = academic.field_of_study
             model.instituion = academic.institution
@@ -190,14 +192,14 @@ class Application(models.Model):
             model.level = academic.current_level
             model.program = academic.program
         
-            account = applicant.account_bank
+            account:AccountBank = applicant.account_bank
             model.account_bank = account.bank
             model.account_name = account.account_name
             model.account_number = account.account_number
         
-            referee = applicant.referee
+            referee:Referee = applicant.referee
             model.referee_name = referee.fullname
-            model.referee_phone_number = referee.phone_number,
+            model.referee_phone_number = referee.phone_number
             model.referee_occupation = referee.occupation
         
             model.save()

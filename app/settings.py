@@ -165,8 +165,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 AUTH_USER_MODEL = "users.User"
-LOGIN_REDIRECT_URL = "/user/dashboard"
-LOGIN_URL = "/user/login"
+LOGIN_REDIRECT_URL = "/applicant/dashboard"
+LOGIN_URL = "/auth/signin"
 MESSAGE_LEVEL = messages.DEBUG
 MESSAGE_TAGS = {
     messages.DEBUG: 'bg-light',
