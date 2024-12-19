@@ -34,7 +34,11 @@ SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['bssb.bo.gov.ng', 'www.bssb.bo.gov.ng', 'localhost']
+ALLOWED_HOSTS = [
+    'media.bssb.bo.gov.ng', 'www.media.bssb.bo.gov.ng', 
+    'bssb.bo.gov.ng', 'www.bssb.bo.gov.ng', 
+    'localhost', '127.0.0.1'
+]
 
 
 
