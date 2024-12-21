@@ -1,21 +1,19 @@
-import re
 from django import forms
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.safestring import mark_safe
-from django.shortcuts import get_object_or_404
 from crispy_forms.layout import Layout, Row, Column
 from crispy_forms.bootstrap import PrependedText
 from crispy_forms.helper import FormHelper
-from app.validators import validate_phone_number
 from board.models import LGA
 from applicant.models import PersonalInformation
 from users.models import User
-from .validators import validate_nin, validate_bvn
+from .validators import validate_nin, validate_bvn, validate_phone
+
 
 class RegisterForm(UserCreationForm):
-    phone_number = forms.CharField(max_length=15, validators=[validate_phone_number])
+    phone_number = forms.CharField(max_length=15, validators=[validate_phone])
     nin = forms.CharField(label="National Identification Number", required=True, validators=[validate_nin])
     bvn = forms.CharField(label="Bank Verification Number", required=True, validators=[validate_bvn])
     gender = forms.ChoiceField(choices=PersonalInformation.GENDER)
@@ -47,7 +45,7 @@ class RegisterForm(UserCreationForm):
         user.is_active = False
         
         info = PersonalInformation(
-            phone_number = self.cleaned_data.get('phone_number'),
+            phone_number = data.get('phone_number'),
             nin = data.get('nin'), bvn = data.get('bvn'), 
             gender = data.get('gender'), user = user,
             date_of_birth = data.get('date_of_birth'),

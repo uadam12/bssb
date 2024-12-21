@@ -17,7 +17,7 @@ def login_required(view):
         user = request.user
 
         if not user.is_authenticated:
-            messages.info(request, 'You need to login to access this page.')
+            messages.info(request, 'You need to signin to access this page.')
             return unauthorized_response(request, 'auth:signin')
         
         if user.is_blocked:
@@ -100,15 +100,15 @@ def officials_only(admin_only=False, main_admin_only=False):
             if user.access_code < 2:
                 messages.error(request, 'This page is for officials only.')
                 logout(request)
-                return unauthorized_response(request, 'user:login')
+                return unauthorized_response(request, 'auth:signin')
 
             if admin_only and user.access_code == 2:
                 messages.info(request, 'This page is for admins only.')
-                return unauthorized_response(request, 'official:dashboard')
+                return unauthorized_response(request, user.dashboard)
              
             if main_admin_only and user.access_code < 4:
                 messages.info(request, 'This page is for main admins only.')
-                return unauthorized_response(request, 'official:dashboard')
+                return unauthorized_response(request, user.dashboard)
             return view(request, *args, **kwargs)
         return wrapper
     return officials_deco

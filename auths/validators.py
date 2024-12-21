@@ -1,11 +1,11 @@
 import re
 from django.core.exceptions import ValidationError
 from applicant.models import PersonalInformation
-from app.validators import validate_phone_number as vpn
+from app.validators import validate_phone_number
 
 
 def validate_phone(phone_number):
-    phone_number = vpn(phone_number)
+    phone_number = validate_phone_number(phone_number)
 
     if PersonalInformation.objects.filter(phone_number=phone_number).exists():
         raise ValidationError(f"Applicant with this phone number already exists.")

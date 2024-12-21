@@ -68,8 +68,8 @@ class User(AbstractUser):
             'referee': 'Please provide us with your referee details.'
         }
         
-        if self.picture.url.endswith('.svg'):
-            profile_errors.append('Please update your profile picture.')
+        if not self.picture:
+            profile_errors.append('Please upload your profile picture.')
         
         for field, message in error_messages.items():
             if not hasattr(self, field):
@@ -101,7 +101,7 @@ class User(AbstractUser):
     def __str__(self):
         name = f"{self.first_name} {self.last_name}"
         name = name.strip()
-        
+
         return name if name else self.email
 
 

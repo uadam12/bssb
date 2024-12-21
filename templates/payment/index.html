@@ -4,7 +4,13 @@
     <td><span class="amount">{{ payment.amount }}</span></td>
     <td>{{ payment.paid_on }}</td>
     <td>{{ payment.rrr }}</td>
-    <td>{{ payment.verified|yesno|capfirst }}</td>
+    <td>
+        {% if payment.verified %}
+        Successfull
+        {% else %}
+        Pending
+        {% endif %}
+    </td>
 </tr>
 {% empty %}
 <tr>

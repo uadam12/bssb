@@ -133,8 +133,9 @@ def add_school(request):
         messages.success(request, f"{school} added.")
 
     return create_view(
-        request, SchoolAttendedForm,
-        'applicant:profile', 'Add School',
+        request, form_class=SchoolAttendedForm,
+        success_url='applicant:profile', 
+        form_header='Add School',
         save_instantly=False,
         further_action = save
     )
@@ -147,8 +148,9 @@ def update_school(request, pk):
         messages.success(request, f"{school} updated.")
     
     return update_view(
-        request, SchoolAttendedForm, school,
-        'applicant:schools-attended',
+        request, 
+        form_class=SchoolAttendedForm, 
+        instance=school,
         form_header='Update School',
         further_action = save
     )
@@ -211,10 +213,12 @@ def scholarships(request):
 
 @complete_profile_required
 def apply(request, id):
+    user = request.user
     scholarship = get_object_or_404(Scholarship, id=id)
-    application = Application.objects.filter(scholarship=scholarship, applicant=request.user).first()
+    application = Application.objects.filter(scholarship=scholarship, applicant=user).first()
+    fee_payment = application.application_fee_payment
 
-    if not (application and application.application_fee_payment):
+    if not (application and fee_payment and fee_payment.verified):
         return redirect('payment:application-fee', id=id)
     
     if application.status != 'incomplete':
@@ -234,7 +238,7 @@ def apply(request, id):
             messages.success(request, f'You have successfully applied for {scholarship}')
             application.status = 'pending'
             application.save()
-            return redirect('applicant:dashboard')
+            return redirect(user.dashboard)
 
     return render(
         request, 'applicants/apply', 

@@ -106,6 +106,27 @@
         </ul>
     </li>
 
+    <!-- SSCE -->
+    <li class="sidebar-item">
+        <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+            data-bs-target="#ssce" aria-expanded="true" aria-controls="ssce">
+            <span>
+                <i class="bi bi-reception-4"></i> SSCE
+            </span>
+        </a>
+        <ul id="ssce" class="sidebar-dropdown list-unstyled collapse ms-3" data-bs-parent="#sidebar">
+            <li class="sidebar-item">
+                <a href="{% url 'ssce:index' %}" class="sidebar-link"><i class="bi bi-link"></i> SSCE</a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'ssce:subjects' %}" class="sidebar-link"><i class="bi bi-link"></i> Subjects</a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'ssce:grades' %}" class="sidebar-link"><i class="bi bi-link"></i> Grades</a>
+            </li>
+        </ul>
+    </li>
+
     <!-- Scholarships -->
     <li class="sidebar-item">
         <a href="{% url 'scholarship:index' %}" class="sidebar-link"><i class="bi bi-award"></i> Scholarships</a>

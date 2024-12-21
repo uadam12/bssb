@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters', 'crispy_forms', 'crispy_bootstrap5',
-    'board', 'payment', 'users', 'main', 'support',
+    'board', 'payment', 'users', 'main', 'support', 'ssce',
     'academic', 'scholarship', 'applicant', 'auths',
 ]
 

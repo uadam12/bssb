@@ -40,9 +40,7 @@ def create_view(
         form = form_class(data=request.POST, files=request.FILES)
 
         if form.is_valid():
-            print('Before save')
             model = form.save(save_instantly)
-            print('After save')
 
             if success_msg: messages.success(request, success_msg)
             if further_action is not None:
