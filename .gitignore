@@ -7,3 +7,4 @@ migrations/
 media/
 passenger_wsgi.py
 tmp/
+staticfiles/
